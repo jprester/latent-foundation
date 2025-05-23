@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Story } from "@/types/story";
+import ClientDate from "@/components/ClientDate";
 import { FilterType } from "@/types/filter";
 
 export default function Home() {
@@ -154,11 +155,10 @@ export default function Home() {
                     >
                       {story.class.toUpperCase()}
                     </span>
-                    <span className="text-xs text-gray-500 font-mono">
-                      {story.date
-                        ? new Date(story.date).toLocaleDateString()
-                        : "No date"}
-                    </span>
+                    <ClientDate
+                      date={story.date}
+                      className="text-xs text-gray-500 font-mono"
+                    />
                   </div>
 
                   <h2 className="text-lg font-bold text-scp-text mb-3 font-mono leading-tight">

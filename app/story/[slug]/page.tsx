@@ -1,10 +1,11 @@
 "use client";
-
-import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+
 import { Story } from "@/types/story";
+import ClientDate from "@/components/ClientDate";
 
 interface StoryPageProps {
   params: Promise<{
@@ -122,9 +123,10 @@ export default function StoryPage({ params }: StoryPageProps) {
                   OBJECT CLASS: {story.class.toUpperCase()}
                 </span>
               </div>
-              <span className="text-sm text-gray-500 font-mono">
-                {new Date(story.date).toLocaleDateString()}
-              </span>
+              <ClientDate
+                date={story.date}
+                className="text-sm text-gray-500 font-mono"
+              />
             </div>
 
             <h1 className="text-2xl md:text-3xl font-bold text-scp-text font-mono mb-4">
