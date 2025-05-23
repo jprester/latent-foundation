@@ -2,13 +2,29 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { Story } from "@/types/story";
 import ClientDate from "@/components/ClientDate";
-import { FilterType } from "@/types/filter";
+import DarkModeToggle from "@/components/DarkModeToggle";
 
-export default function Home() {
+// Prevent SSR for the entire component to avoid hydration mismatches
+const StoriesGrid = dynamic(() => Promise.resolve(StoriesGridComponent), {
+  ssr: false,
+  loading: () => (
+    <div className="min-h-screen bg-scp-bg flex items-center justify-center">
+      <div className="text-center">
+        <div className="text-2xl font-mono text-scp-text mb-4">LOADING...</div>
+        <div className="text-gray-600 font-mono">ACCESSING SECURE DATABASE</div>
+      </div>
+    </div>
+  ),
+});
+
+function StoriesGridComponent() {
   const [stories, setStories] = useState<Story[]>([]);
-  const [filter, setFilter] = useState<FilterType>("All");
+  const [filter, setFilter] = useState<"All" | "Safe" | "Euclid" | "Keter">(
+    "All"
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,13 +63,13 @@ export default function Home() {
   const getClassColor = (className: string) => {
     switch (className) {
       case "Safe":
-        return "text-scp-safe";
+        return "text-scp-safe dark:text-scp-safe-dark";
       case "Euclid":
-        return "text-scp-euclid";
+        return "text-scp-euclid dark:text-scp-euclid-dark";
       case "Keter":
-        return "text-scp-keter";
+        return "text-scp-keter dark:text-scp-keter-dark";
       default:
-        return "text-gray-600";
+        return "text-gray-600 dark:text-gray-400";
     }
   };
 
@@ -90,14 +106,21 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-scp-bg">
-      <header className="bg-white shadow-sm border-b-2 border-scp-accent">
+    <div className="min-h-screen bg-scp-bg dark:bg-scp-bg-dark transition-colors duration-200">
+      <header className="bg-scp-card dark:bg-scp-card-dark shadow-sm border-b-2 border-scp-accent dark:border-scp-accent-dark transition-colors duration-200">
         <div className="max-w-4xl mx-auto px-4 py-6">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-scp-text font-mono">
-              SCP STORIES COLLECTION
-            </h1>
-            <p className="text-gray-600 mt-2">SECURE • CONTAIN • PROTECT</p>
+          <div className="flex justify-between items-center">
+            <div className="text-center flex-1">
+              <h1 className="text-3xl font-bold text-scp-text dark:text-scp-text-dark font-mono transition-colors duration-200">
+                THE LATENT FOUNDATION
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400 mt-2 transition-colors duration-200">
+                SECURE • CONTAIN • PROTECT • GENERATE
+              </p>
+            </div>
+            <div className="ml-4">
+              <DarkModeToggle />
+            </div>
           </div>
         </div>
       </header>
@@ -111,9 +134,9 @@ export default function Home() {
               onClick={() => setFilter(itemClass)}
               className={`px-4 py-2 rounded font-mono text-sm font-semibold transition-colors ${
                 filter === itemClass
-                  ? "bg-scp-accent text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-100"
-              } border border-gray-300`}
+                  ? "bg-scp-accent dark:bg-scp-accent-dark text-white"
+                  : "bg-scp-card dark:bg-scp-card-dark text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
+              } border border-scp-border dark:border-scp-border-dark`}
             >
               {itemClass === "All"
                 ? "ALL CLASSES"
@@ -125,13 +148,13 @@ export default function Home() {
         {/* Stories Grid */}
         {filteredStories.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 font-mono mb-4">
+            <p className="text-gray-500 dark:text-gray-400 font-mono mb-4 transition-colors duration-200">
               {stories.length === 0
                 ? "NO STORIES FOUND • ADD SOME MARKDOWN FILES TO /stories DIRECTORY"
                 : "NO STORIES MATCH THE SELECTED FILTER"}
             </p>
             {stories.length === 0 && (
-              <div className="text-sm text-gray-400 font-mono">
+              <div className="text-sm text-gray-400 dark:text-gray-500 font-mono transition-colors duration-200">
                 <p>CREATE FILES LIKE:</p>
                 <p>stories/scp-001.md</p>
                 <p>stories/scp-002.md</p>
@@ -146,12 +169,12 @@ export default function Home() {
                 href={`/story/${story.slug}`}
                 className="block"
               >
-                <div className="bg-white border border-gray-300 p-6 hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <div className="bg-scp-card dark:bg-scp-card-dark border border-scp-border dark:border-scp-border-dark p-6 hover:shadow-lg dark:hover:shadow-xl transition-all duration-200 cursor-pointer h-full">
                   <div className="flex items-start justify-between mb-3">
                     <span
                       className={`px-2 py-1 text-xs font-mono font-bold ${getClassColor(
                         story.class
-                      )} bg-gray-100 rounded`}
+                      )} bg-gray-100 dark:bg-gray-700 rounded transition-colors duration-200`}
                     >
                       {story.class.toUpperCase()}
                     </span>
@@ -161,22 +184,22 @@ export default function Home() {
                     />
                   </div>
 
-                  <h2 className="text-lg font-bold text-scp-text mb-3 font-mono leading-tight">
+                  <h2 className="text-lg font-bold text-scp-text dark:text-scp-text-dark mb-3 font-mono leading-tight transition-colors duration-200">
                     {story.title}
                   </h2>
 
-                  {story.tags.length > 0 && (
+                  {story.tags && story.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1">
                       {story.tags.slice(0, 3).map((tag, index) => (
                         <span
                           key={index}
-                          className="px-2 py-1 text-xs bg-gray-200 text-gray-700 rounded font-mono"
+                          className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded font-mono transition-colors duration-200"
                         >
                           {tag}
                         </span>
                       ))}
                       {story.tags.length > 3 && (
-                        <span className="px-2 py-1 text-xs bg-gray-200 text-gray-700 rounded font-mono">
+                        <span className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded font-mono transition-colors duration-200">
                           +{story.tags.length - 3}
                         </span>
                       )}
@@ -189,13 +212,17 @@ export default function Home() {
         )}
       </main>
 
-      <footer className="bg-white border-t border-gray-300 mt-16 py-8">
+      <footer className="bg-scp-card dark:bg-scp-card-dark border-t border-scp-border dark:border-scp-border-dark mt-16 py-8 transition-colors duration-200">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <p className="text-gray-600 font-mono text-sm">
+          <p className="text-gray-600 dark:text-gray-400 font-mono text-sm transition-colors duration-200">
             GENERATED WITH CLAUDE • STORIES FOR ENTERTAINMENT PURPOSES ONLY
           </p>
         </div>
       </footer>
     </div>
   );
+}
+
+export default function Home() {
+  return <StoriesGrid />;
 }

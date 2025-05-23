@@ -1,11 +1,13 @@
 "use client";
+
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 import { Story } from "@/types/story";
 import ClientDate from "@/components/ClientDate";
+import DarkModeToggle from "@/components/DarkModeToggle";
 
 interface StoryPageProps {
   params: Promise<{
@@ -52,24 +54,26 @@ export default function StoryPage({ params }: StoryPageProps) {
   const getClassColor = (className: string) => {
     switch (className) {
       case "Safe":
-        return "text-scp-safe bg-green-50 border-scp-safe";
+        return "text-scp-safe dark:text-scp-safe-dark bg-green-50 dark:bg-green-900/20 border-scp-safe dark:border-scp-safe-dark";
       case "Euclid":
-        return "text-scp-euclid bg-orange-50 border-scp-euclid";
+        return "text-scp-euclid dark:text-scp-euclid-dark bg-orange-50 dark:bg-orange-900/20 border-scp-euclid dark:border-scp-euclid-dark";
       case "Keter":
-        return "text-scp-keter bg-red-50 border-scp-keter";
+        return "text-scp-keter dark:text-scp-keter-dark bg-red-50 dark:bg-red-900/20 border-scp-keter dark:border-scp-keter-dark";
       default:
-        return "text-gray-600 bg-gray-50 border-gray-300";
+        return "text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600";
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-scp-bg flex items-center justify-center">
+      <div className="min-h-screen bg-scp-bg dark:bg-scp-bg-dark flex items-center justify-center transition-colors duration-200">
         <div className="text-center">
-          <div className="text-2xl font-mono text-scp-text mb-4">
+          <div className="text-2xl font-mono text-scp-text dark:text-scp-text-dark mb-4 transition-colors duration-200">
             LOADING...
           </div>
-          <div className="text-gray-600 font-mono">ACCESSING SECURE FILE</div>
+          <div className="text-gray-600 dark:text-gray-400 font-mono transition-colors duration-200">
+            ACCESSING SECURE FILE
+          </div>
         </div>
       </div>
     );
@@ -77,17 +81,17 @@ export default function StoryPage({ params }: StoryPageProps) {
 
   if (!story) {
     return (
-      <div className="min-h-screen bg-scp-bg flex items-center justify-center">
+      <div className="min-h-screen bg-scp-bg dark:bg-scp-bg-dark flex items-center justify-center transition-colors duration-200">
         <div className="text-center">
-          <div className="text-2xl font-mono text-scp-accent mb-4">
+          <div className="text-2xl font-mono text-scp-accent dark:text-scp-accent-dark mb-4 transition-colors duration-200">
             FILE NOT FOUND
           </div>
-          <div className="text-gray-600 font-mono mb-8">
+          <div className="text-gray-600 dark:text-gray-400 font-mono mb-8 transition-colors duration-200">
             DOCUMENT MAY BE CLASSIFIED OR REDACTED
           </div>
           <Link
             href="/"
-            className="inline-block bg-scp-accent text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 transition-colors"
+            className="inline-block bg-scp-accent dark:bg-scp-accent-dark text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 dark:hover:bg-red-600 transition-colors"
           >
             RETURN TO COLLECTION
           </Link>
@@ -97,25 +101,28 @@ export default function StoryPage({ params }: StoryPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-scp-bg">
-      <header className="bg-white shadow-sm border-b-2 border-scp-accent">
+    <div className="min-h-screen bg-scp-bg dark:bg-scp-bg-dark transition-colors duration-200">
+      <header className="bg-scp-card dark:bg-scp-card-dark shadow-sm border-b-2 border-scp-accent dark:border-scp-accent-dark transition-colors duration-200">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <Link
-            href="/"
-            className="text-scp-accent hover:text-red-800 font-mono text-sm font-semibold"
-          >
-            ← BACK TO COLLECTION
-          </Link>
+          <div className="flex justify-between items-center">
+            <Link
+              href="/"
+              className="text-scp-accent dark:text-scp-accent-dark hover:text-red-800 dark:hover:text-red-400 font-mono text-sm font-semibold transition-colors"
+            >
+              ← BACK TO COLLECTION
+            </Link>
+            <DarkModeToggle />
+          </div>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <article className="bg-white shadow-lg rounded-none border border-gray-300">
+        <article className="bg-scp-card dark:bg-scp-card-dark shadow-lg rounded-none border border-scp-border dark:border-scp-border-dark transition-colors duration-200">
           {/* Story Header */}
-          <header className="border-b border-gray-300 p-6 bg-gray-50">
+          <header className="border-b border-scp-border dark:border-scp-border-dark p-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-200">
             <div className="flex items-start justify-between mb-4">
               <div
-                className={`px-3 py-2 rounded border-2 ${getClassColor(
+                className={`px-3 py-2 rounded border-2 transition-colors duration-200 ${getClassColor(
                   story.class
                 )}`}
               >
@@ -129,16 +136,16 @@ export default function StoryPage({ params }: StoryPageProps) {
               />
             </div>
 
-            <h1 className="text-2xl md:text-3xl font-bold text-scp-text font-mono mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold text-scp-text dark:text-scp-text-dark font-mono mb-4 transition-colors duration-200">
               {story.title}
             </h1>
 
-            {story.tags.length > 0 && (
+            {story.tags && story.tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {story.tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1 text-sm bg-white text-gray-700 rounded border border-gray-300 font-mono"
+                    className="px-3 py-1 text-sm bg-scp-card dark:bg-scp-card-dark text-gray-700 dark:text-gray-300 rounded border border-scp-border dark:border-scp-border-dark font-mono transition-colors duration-200"
                   >
                     {tag}
                   </span>
@@ -149,37 +156,39 @@ export default function StoryPage({ params }: StoryPageProps) {
 
           {/* Story Content */}
           <div className="p-6 md:p-8">
-            <div className="prose prose-gray max-w-none">
+            <div className="prose prose-gray dark:prose-invert max-w-none">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
                   h1: ({ children }) => (
-                    <h1 className="text-2xl font-bold font-mono text-scp-text mb-6 pb-2 border-b-2 border-scp-accent">
+                    <h1 className="text-2xl font-bold font-mono text-scp-text dark:text-scp-text-dark mb-6 pb-2 border-b-2 border-scp-accent dark:border-scp-accent-dark transition-colors duration-200">
                       {children}
                     </h1>
                   ),
                   h2: ({ children }) => (
-                    <h2 className="text-xl font-bold font-mono text-scp-text mb-4 mt-8">
+                    <h2 className="text-xl font-bold font-mono text-scp-text dark:text-scp-text-dark mb-4 mt-8 transition-colors duration-200">
                       {children}
                     </h2>
                   ),
                   h3: ({ children }) => (
-                    <h3 className="text-lg font-bold font-mono text-scp-text mb-3 mt-6">
+                    <h3 className="text-lg font-bold font-mono text-scp-text dark:text-scp-text-dark mb-3 mt-6 transition-colors duration-200">
                       {children}
                     </h3>
                   ),
                   p: ({ children }) => (
-                    <p className="mb-4 text-gray-800 leading-relaxed font-sans">
+                    <p className="mb-4 text-gray-800 dark:text-gray-200 leading-relaxed font-sans transition-colors duration-200">
                       {children}
                     </p>
                   ),
                   strong: ({ children }) => (
-                    <strong className="font-bold text-scp-text font-mono">
+                    <strong className="font-bold text-scp-text dark:text-scp-text-dark font-mono transition-colors duration-200">
                       {children}
                     </strong>
                   ),
                   em: ({ children }) => (
-                    <em className="italic text-gray-700">{children}</em>
+                    <em className="italic text-gray-700 dark:text-gray-300 transition-colors duration-200">
+                      {children}
+                    </em>
                   ),
                   ul: ({ children }) => (
                     <ul className="mb-4 pl-6 space-y-2 list-disc">
@@ -192,17 +201,17 @@ export default function StoryPage({ params }: StoryPageProps) {
                     </ol>
                   ),
                   li: ({ children }) => (
-                    <li className="text-gray-800 leading-relaxed">
+                    <li className="text-gray-800 dark:text-gray-200 leading-relaxed transition-colors duration-200">
                       {children}
                     </li>
                   ),
                   blockquote: ({ children }) => (
-                    <blockquote className="border-l-4 border-scp-accent pl-4 py-2 my-4 bg-gray-50 italic text-gray-700">
+                    <blockquote className="border-l-4 border-scp-accent dark:border-scp-accent-dark pl-4 py-2 my-4 bg-gray-50 dark:bg-gray-800 italic text-gray-700 dark:text-gray-300 transition-colors duration-200">
                       {children}
                     </blockquote>
                   ),
                   code: ({ children }) => (
-                    <code className="bg-gray-100 px-2 py-1 rounded text-sm font-mono text-scp-accent">
+                    <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-sm font-mono text-scp-accent dark:text-scp-accent-dark transition-colors duration-200">
                       {children}
                     </code>
                   ),
@@ -218,7 +227,7 @@ export default function StoryPage({ params }: StoryPageProps) {
         <div className="mt-8 text-center">
           <Link
             href="/"
-            className="inline-block bg-scp-accent text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 transition-colors"
+            className="inline-block bg-scp-accent dark:bg-scp-accent-dark text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 dark:hover:bg-red-600 transition-colors"
           >
             RETURN TO COLLECTION
           </Link>
