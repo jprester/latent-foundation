@@ -24,13 +24,12 @@ export default function StoryCard({ story }: StoryCardProps) {
 
   return (
     <Link href={`/story/${story.slug}`} className="block">
-      <div className="bg-scp-card dark:bg-scp-card-dark border border-scp-border dark:border-scp-border-dark p-6 hover:shadow-lg dark:hover:shadow-xl transition-all duration-200 cursor-pointer h-full">
+      <div className="bg-scp-card dark:bg-scp-card-dark border border-scp-border dark:border-scp-border-dark p-6 hover:shadow-lg dark:hover:border-red-700 transition-all duration-200 cursor-pointer h-full">
         <div className="flex items-start justify-between mb-3">
           <span
             className={`px-2 py-1 text-xs font-mono font-bold ${getClassColor(
               story.class
-            )} bg-gray-100 dark:bg-gray-700 rounded transition-colors duration-200`}
-          >
+            )} bg-gray-100 dark:bg-gray-700 rounded transition-colors duration-200`}>
             {story.class.toUpperCase()}
           </span>
           <ClientDate
@@ -48,8 +47,7 @@ export default function StoryCard({ story }: StoryCardProps) {
             {story.tags.slice(0, 3).map((tag, index) => (
               <span
                 key={index}
-                className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded font-mono transition-colors duration-200"
-              >
+                className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded font-mono transition-colors duration-200">
                 {tag}
               </span>
             ))}

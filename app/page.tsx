@@ -127,7 +127,11 @@ function Footer() {
     <footer className="bg-scp-card dark:bg-scp-card-dark border-t border-scp-border dark:border-scp-border-dark mt-16 py-8 transition-colors duration-200">
       <div className="max-w-4xl mx-auto px-4 text-center">
         <p className="text-gray-600 dark:text-gray-400 font-mono text-sm transition-colors duration-200">
-          GENERATED WITH CLAUDE • STORIES FOR ENTERTAINMENT PURPOSES ONLY
+          GENERATED WITH CLAUDE • STORIES FOR ENTERTAINMENT PURPOSES ONLY •
+          INSPIRED BY THE{" "}
+          <a className="underline" href="https://scp-wiki.wikidot.com/">
+            SCP FOUNDATION
+          </a>
         </p>
       </div>
     </footer>
