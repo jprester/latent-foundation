@@ -6,6 +6,8 @@ export interface Story {
   date: string;
   content: string;
   slug: string;
+  thumbnail?: string; // Optional thumbnail path
+  images?: string[]; // Optional array of additional image paths
 }
 
 export interface StoryMatter {
@@ -13,4 +15,6 @@ export interface StoryMatter {
   class: "Safe" | "Euclid" | "Keter";
   tags: string[];
   date: string;
+  thumbnail?: string;
+  images?: string[];
 }

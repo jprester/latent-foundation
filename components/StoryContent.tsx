@@ -1,14 +1,20 @@
 "use client";
 
+import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useState } from "react";
 import { Story } from "@/types/story";
+import { getStoryThumbnail, getStoryImages } from "@/lib/imageUtils";
+import ImageGallery from "./ImageGallery";
 
 interface StoryContentProps {
   story: Story;
 }
 
 export default function StoryContent({ story }: StoryContentProps) {
+  const [thumbnailError, setThumbnailError] = useState(false);
+
   const getClassColor = (className: string) => {
     switch (className) {
       case "Safe":
@@ -22,6 +28,9 @@ export default function StoryContent({ story }: StoryContentProps) {
     }
   };
 
+  const thumbnailPath = getStoryThumbnail(story.id, story.thumbnail);
+  const storyImages = getStoryImages(story.id, story.images);
+
   return (
     <article className="bg-scp-card dark:bg-scp-card-dark shadow-lg rounded-none border border-scp-border dark:border-scp-border-dark transition-colors duration-200">
       {/* Story Header */}
@@ -30,8 +39,7 @@ export default function StoryContent({ story }: StoryContentProps) {
           <div
             className={`px-3 py-2 rounded border-2 transition-colors duration-200 ${getClassColor(
               story.class
-            )}`}
-          >
+            )}`}>
             <span className="font-mono font-bold text-sm">
               OBJECT CLASS: {story.class.toUpperCase()}
             </span>
@@ -45,13 +53,28 @@ export default function StoryContent({ story }: StoryContentProps) {
           {story.title}
         </h1>
 
+        {/* Thumbnail Image */}
+        {!thumbnailError && (
+          <div className="relative w-full h-64 md:h-80 mb-4 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden">
+            <Image
+              src={thumbnailPath}
+              alt={story.title}
+              fill
+              className="object-cover"
+              onError={() => setThumbnailError(true)}
+              sizes="(max-width: 768px) 100vw, 800px"
+              priority
+            />
+            <div className="absolute inset-0 bg-black/10 dark:bg-black/20"></div>
+          </div>
+        )}
+
         {story.tags && story.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {story.tags.map((tag, index) => (
               <span
                 key={index}
-                className="px-3 py-1 text-sm bg-scp-card dark:bg-scp-card-dark text-gray-700 dark:text-gray-300 rounded border border-scp-border dark:border-scp-border-dark font-mono transition-colors duration-200"
-              >
+                className="px-3 py-1 text-sm bg-scp-card dark:bg-scp-card-dark text-gray-700 dark:text-gray-300 rounded border border-scp-border dark:border-scp-border-dark font-mono transition-colors duration-200">
                 {tag}
               </span>
             ))}
@@ -116,10 +139,12 @@ export default function StoryContent({ story }: StoryContentProps) {
                   {children}
                 </code>
               ),
-            }}
-          >
+            }}>
             {story.content}
           </ReactMarkdown>
+
+          {/* Additional Images Gallery */}
+          <ImageGallery images={storyImages} storyTitle={story.title} />
         </div>
       </div>
     </article>
