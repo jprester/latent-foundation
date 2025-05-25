@@ -27,7 +27,7 @@ export default function ClassFilter({
               ? "bg-scp-accent dark:bg-scp-accent-dark text-white"
               : "bg-scp-card dark:bg-scp-card-dark text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
           } border border-scp-border dark:border-scp-border-dark`}>
-          {filterName === "All" ? "ALL CLASSES" : `${filterName.toUpperCase()}`}
+          {filterName === "All" ? "ALL" : `${filterName.toUpperCase()}`}
         </button>
       ))}
     </div>
