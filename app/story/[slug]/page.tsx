@@ -37,6 +37,44 @@ export default function StoryPage({ params }: StoryPageProps) {
       if (response.ok) {
         const storyData = await response.json();
         setStory(storyData);
+        // Update page metadata dynamically
+        if (storyData) {
+          document.title = `${storyData.title} | The Latent Foundation`;
+        }
+
+        // Add structured data for the story
+        const existingScript = document.querySelector(
+          'script[type="application/ld+json"]'
+        );
+        if (!existingScript) {
+          const script = document.createElement("script");
+          script.type = "application/ld+json";
+          script.innerHTML = JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: storyData.title,
+            description: `A ${
+              storyData.class
+            } class SCP story featuring ${storyData.tags
+              ?.slice(0, 3)
+              .join(", ")}`,
+            author: {
+              "@type": "Organization",
+              name: "The Latent Foundation",
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "The Latent Foundation",
+            },
+            datePublished: storyData.date,
+            dateModified: storyData.date,
+            genre: ["Science Fiction", "Horror", "Creative Writing"],
+            keywords: storyData.tags?.join(", "),
+            articleSection: `SCP Class ${storyData.class}`,
+            inLanguage: "en-US",
+          });
+          document.head.appendChild(script);
+        }
       } else {
         setStory(null);
       }
@@ -86,8 +124,7 @@ export default function StoryPage({ params }: StoryPageProps) {
         <div className="mt-8 text-center">
           <Link
             href="/"
-            className="inline-block bg-scp-accent dark:bg-scp-accent-dark text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 dark:hover:bg-red-600 transition-colors"
-          >
+            className="inline-block bg-scp-accent dark:bg-scp-accent-dark text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 dark:hover:bg-red-600 transition-colors">
             RETURN TO COLLECTION
           </Link>
         </div>

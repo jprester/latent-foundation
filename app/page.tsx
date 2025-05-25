@@ -9,6 +9,7 @@ import ErrorScreen from "@/components/ErrorScreen";
 import PageHeader from "@/components/PageHeader";
 import StoryCard from "@/components/StoryCard";
 import ClassFilter from "@/components/ClassFilter";
+import StructuredData from "@/components/StructuredData";
 
 // Prevent SSR for the entire component to avoid hydration mismatches
 const StoriesGrid = dynamic(() => Promise.resolve(StoriesGridComponent), {
@@ -73,26 +74,29 @@ function StoriesGridComponent() {
   }
 
   return (
-    <div className="min-h-screen bg-scp-bg dark:bg-scp-bg-dark transition-colors duration-200">
-      <PageHeader />
+    <>
+      <StructuredData stories={stories} />
+      <div className="min-h-screen bg-scp-bg dark:bg-scp-bg-dark transition-colors duration-200">
+        <PageHeader />
 
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        <ClassFilter activeFilter={filter} onFilterChange={setFilter} />
+        <main className="max-w-4xl mx-auto px-4 py-8">
+          <ClassFilter activeFilter={filter} onFilterChange={setFilter} />
 
-        {/* Stories Grid */}
-        {filteredStories.length === 0 ? (
-          <EmptyState hasStories={stories.length > 0} activeFilter={filter} />
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredStories.map((story) => (
-              <StoryCard key={story.id} story={story} />
-            ))}
-          </div>
-        )}
-      </main>
+          {/* Stories Grid */}
+          {filteredStories.length === 0 ? (
+            <EmptyState hasStories={stories.length > 0} activeFilter={filter} />
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredStories.map((story) => (
+                <StoryCard key={story.id} story={story} />
+              ))}
+            </div>
+          )}
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   );
 }
 
