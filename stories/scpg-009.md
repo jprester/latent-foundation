@@ -3,6 +3,7 @@ title: "SCPG-009: The Blackwood Estate"
 class: "Apollyon"
 tags: ["building", "extradimensional", "temporal", "cosmic", "reality-bending"]
 date: "2025-05-24"
+images: ["mtf-theta-4-preparing.jpg", "mansion-entity.jpg"]
 ---
 
 # SCPG-009: The Blackwood Estate

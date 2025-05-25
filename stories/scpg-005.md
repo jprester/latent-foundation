@@ -3,6 +3,8 @@ title: "SCPG-005: The Somnambulist's Atlas"
 class: "Euclid"
 tags: ["artifact", "dream", "mental-influence", "extradimensional"]
 date: "2025-05-24"
+thumbnail: "thumbnail.jpg"
+images: ["dreamscape.jpg"]
 ---
 
 # SCPG-005: The Somnambulist's Atlas

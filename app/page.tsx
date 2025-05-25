@@ -38,7 +38,6 @@ function StoriesGridComponent() {
       }
 
       const allStories = await response.json();
-      console.log("Loaded stories:", allStories);
       setStories(allStories || []);
     } catch (error) {
       console.error("Failed to load stories:", error);

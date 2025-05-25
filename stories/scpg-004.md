@@ -3,6 +3,8 @@ title: "SCPG-004: Silhouette"
 class: "Keter"
 tags: ["memetic", "cognitohazard"]
 date: "2025-05-24"
+thumbnail: "thumbnail.jpg"
+images: ["entity-contained.jpg", "mtf-psi-9.jpg"]
 ---
 
 # SCPG-004: Silhouette

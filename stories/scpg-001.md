@@ -3,9 +3,6 @@ title: "SCPG-001: The Prototype"
 class: "Keter"
 tags: ["reality-bending", "memetic", "meta"]
 date: "2025-05-23"
-thumbnail: "test-img.png"
-images:
-  ["containment-chamber.jpg", "reality-distortion.jpg", "incident-log.jpg"]
 ---
 
 # SCPG-001: The Prototype

@@ -30,7 +30,7 @@ export default function StoryCard({ story }: StoryCardProps) {
 
   return (
     <Link href={`/story/${story.slug}`} className="block">
-      <div className="bg-scp-card dark:bg-scp-card-dark border border-scp-border dark:border-scp-border-dark hover:shadow-lg dark:hover:shadow-xl transition-all duration-200 cursor-pointer h-full overflow-hidden">
+      <div className="bg-scp-card dark:bg-scp-card-dark border dark:hover:border-red-700 border-scp-border dark:border-scp-border-dark  transition-all duration-200 cursor-pointer h-full overflow-hidden">
         {/* Thumbnail Image */}
         {!imageError && (
           <div className="relative h-48 w-full bg-gray-200 dark:bg-gray-700">
