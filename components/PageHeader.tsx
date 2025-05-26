@@ -33,11 +33,11 @@ export default function PageHeader({
         ) : (
           <div className="flex justify-between items-center">
             <div className="text-center flex-1">
-              <h1 className="text-3xl font-bold text-scp-text dark:text-scp-text-dark font-mono transition-colors duration-200">
+              <h1 className="text-2xl md:text-3xl font-bold text-scp-text dark:text-scp-text-dark font-mono transition-colors duration-200">
                 {title}
               </h1>
               {subtitle && (
-                <p className="text-gray-600 dark:text-gray-400 mt-2 transition-colors duration-200">
+                <p className="text-gray-600 dark:text-gray-400 mt-2 transition-colors duration-200 hidden md:block">
                   {subtitle}
                 </p>
               )}

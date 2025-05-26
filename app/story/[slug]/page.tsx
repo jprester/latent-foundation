@@ -117,14 +117,14 @@ export default function StoryPage({ params }: StoryPageProps) {
         backButtonHref="/"
       />
 
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <main className="max-w-4xl mx-auto md:px-4 md:py-8">
         <StoryContent story={story} />
 
         {/* Navigation */}
         <div className="mt-8 text-center">
           <Link
             href="/"
-            className="inline-block bg-scp-accent dark:bg-scp-accent-dark text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 dark:hover:bg-red-600 transition-colors">
+            className="inline-block bg-scp-accent dark:bg-scp-accent-dark text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 dark:hover:bg-red-600 transition-colors mb-4">
             RETURN TO COLLECTION
           </Link>
         </div>
