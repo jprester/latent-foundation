@@ -84,6 +84,9 @@ export default function StoryContent({ story }: StoryContentProps) {
 
       {/* Story Content */}
       <div className="p-6 md:p-8">
+        {/* Audio Player */}
+        {/* <AudioPlayer content={story.content} title={story.title} /> Default browser voices suck. Need to find other solution */}
+
         <div className="prose prose-gray dark:prose-invert max-w-none">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
