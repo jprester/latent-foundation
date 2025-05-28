@@ -26,7 +26,7 @@ export default function SearchBar({
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full pl-10 pr-10 py-2 bg-scp-card dark:bg-scp-card-dark border border-scp-border dark:border-scp-border-dark rounded text-scp-text dark:text-scp-text-dark placeholder-gray-500 dark:placeholder-gray-400 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-scp-accent dark:focus:ring-scp-accent-dark focus:border-transparent transition-colors duration-200"
+          className="w-full pl-10 pr-10 py-2 bg-scp-card dark:bg-scp-card-dark border border-scp-border dark:border-scp-border-dark rounded text-scp-text dark:text-scp-text-dark placeholder-gray-500 dark:placeholder-gray-400 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-scp-accent dark:focus:ring-scp-accent-dark focus:border-transparent transition-colors duration-200"
         />
         {searchTerm && (
           <button

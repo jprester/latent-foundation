@@ -50,9 +50,9 @@ export default function StoryContent({ story }: StoryContentProps) {
           </span>
         </div>
 
-        <h1 className="text-2xl md:text-3xl font-bold text-scp-text dark:text-scp-text-dark font-mono mb-4 transition-colors duration-200">
+        {/* <h1 className="text-2xl md:text-3xl font-bold text-scp-text dark:text-scp-text-dark font-mono mb-4 transition-colors duration-200">
           {story.title}
-        </h1>
+        </h1> This is not needed */}
 
         {/* Thumbnail Image */}
         {!thumbnailError && (

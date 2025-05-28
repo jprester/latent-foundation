@@ -3,8 +3,7 @@ title: "SCPG-017: The Reflective Judge"
 class: "Euclid"
 tags: ["artifact", "visual", "psychological", "memetic-hazard"]
 date: "2025-05-27"
-thumbnail: "thumbnail.jpg" # Placeholder - will need an actual image
-images: ["mirror-artifact.jpg"] # Placeholder - will need an actual image
+thumbnail: "thumbnail.jpg"
 ---
 
 # SCPG-017: The Reflective Judge

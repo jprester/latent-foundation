@@ -24,7 +24,7 @@ export default function FilterControls({
   return (
     <div className="mb-4">
       {/* Search and Filter Row */}
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center justify-between mb-4">
         {/* Search Bar - Left Side */}
         <div className="w-full sm:w-auto sm:min-w-[300px]">
           <SearchBar
