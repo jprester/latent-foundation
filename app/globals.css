@@ -19,7 +19,7 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   background-color: #ccc;
-  opacity: 0.99;
+  opacity: 0.985;
   background-size: 10px 10px;
   background-image: repeating-linear-gradient(
     45deg,

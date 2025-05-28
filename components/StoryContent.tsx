@@ -33,7 +33,7 @@ export default function StoryContent({ story }: StoryContentProps) {
   const storyImages = getStoryImages(story.id, story.images);
 
   return (
-    <article className="bg-scp-card dark:bg-scp-card-dark shadow-lg rounded-none border border-scp-border dark:border-scp-border-dark transition-colors duration-200">
+    <article className="bg-scp-card dark:bg-scp-card-dark shadow-lg rounded border border-scp-border dark:border-scp-border-dark transition-colors duration-200">
       {/* Story Header */}
       <header className="border-b border-scp-border dark:border-scp-border-dark p-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-200">
         <div className="flex items-start justify-between mb-4">

@@ -10,26 +10,60 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "scp-bg": "#f4f4f4",
-        "scp-bg-dark": "#1a1a1a",
-        "scp-text": "#333333",
-        "scp-text-dark": "#e5e5e5",
-        "scp-accent": "#901010",
-        "scp-accent-dark": "#cc1414",
-        "scp-safe": "#14532d",
-        "scp-safe-dark": "#22c55e",
-        "scp-euclid": "#ea580c",
-        "scp-euclid-dark": "#fb923c",
-        "scp-keter": "#991b1b",
-        "scp-keter-dark": "#ef4444",
+        // Light theme colors (refined)
+        "scp-bg": "#f8fafc",
+        "scp-text": "#1e293b",
         "scp-card": "#ffffff",
-        "scp-card-dark": "#2d2d2d",
-        "scp-border": "#d1d5db",
-        "scp-border-dark": "#404040",
+        "scp-border": "#e2e8f0",
+
+        // Dark theme colors (much darker)
+        "scp-bg-dark": "#0a0e16", // Much darker background - almost black with blue tint
+        "scp-text-dark": "#f1f5f9", // Clean white text
+        "scp-card-dark": "#151b26", // Dark cards but lighter than background
+        "scp-border-dark": "#1e293b", // Subtle borders that barely show
+
+        // Accent colors
+        "scp-accent": "#dc2626",
+        "scp-accent-dark": "#ef4444",
+
+        // Class colors (refined)
+        "scp-safe": "#059669",
+        "scp-safe-dark": "#10b981",
+        "scp-euclid": "#d97706",
+        "scp-euclid-dark": "#f59e0b",
+        "scp-keter": "#dc2626",
+        "scp-keter-dark": "#ef4444",
+
+        // Additional semantic colors
+        "scp-muted": "#64748b",
+        "scp-muted-dark": "#94a3b8",
       },
       fontFamily: {
-        mono: ["Courier New", "monospace"],
-        sans: ["Arial", "sans-serif"],
+        mono: ["JetBrains Mono", "Fira Code", "Courier New", "monospace"],
+        sans: [
+          "Inter",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "system-ui",
+          "sans-serif",
+        ],
+      },
+      backdropBlur: {
+        xs: "2px",
+      },
+      animation: {
+        "fade-in": "fadeIn 0.5s ease-in-out",
+        "slide-up": "slideUp 0.3s ease-out",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        slideUp: {
+          "0%": { transform: "translateY(10px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
       },
     },
   },

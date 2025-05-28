@@ -124,7 +124,7 @@ export default function StoryPage({ params }: StoryPageProps) {
         <div className="mt-8 text-center">
           <Link
             href="/"
-            className="inline-block bg-scp-accent dark:bg-scp-accent-dark text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 dark:hover:bg-red-600 transition-colors mb-4">
+            className="inline-block rounded  border-scp-border dark:border-scp-border-dark bg-scp-accent dark:bg-scp-accent-dark text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 dark:hover:bg-red-600 transition-colors mb-4">
             RETURN TO COLLECTION
           </Link>
         </div>
