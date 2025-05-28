@@ -20,8 +20,8 @@ export default function PageHeader({
   backButtonHref = "/",
 }: PageHeaderProps) {
   return (
-    <header className="bg-scp-card dark:bg-scp-card-dark shadow-sm border-b-2 border-scp-accent dark:border-scp-accent-dark transition-colors duration-200">
-      <div className="max-w-4xl mx-auto px-4 py-2">
+    <header className="shadow-sm border-b border-scp-card-dark transition-colors duration-200">
+      <div className="max-w-6xl mx-auto px-4 py-2">
         {showBackButton ? (
           <div className="flex justify-between items-center">
             <Link

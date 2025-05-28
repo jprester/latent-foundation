@@ -102,8 +102,7 @@ function StoriesGridComponent() {
       <StructuredData stories={stories} />
       <div className="min-h-screen bg-scp-bg dark:bg-scp-bg-dark transition-colors duration-200">
         <PageHeader />
-
-        <main className="max-w-4xl mx-auto px-4 sm:py-8 py-2">
+        <main className="max-w-6xl mx-auto px-4 sm:py-8 py-2">
           <FilterControls
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
@@ -121,7 +120,7 @@ function StoriesGridComponent() {
               activeFilter={filter}
             />
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
               {filteredStories.map((story) => (
                 <StoryCard key={story.id} story={story} />
               ))}
