@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 
 import { Story } from "@/types/story";
 import LoadingScreen from "@/components/LoadingScreen";
 import ErrorScreen from "@/components/ErrorScreen";
 import PageHeader from "@/components/PageHeader";
+import FilterControls from "@/components/FilterControls";
 import StoryCard from "@/components/StoryCard";
-import ClassFilter from "@/components/ClassFilter";
 import StructuredData from "@/components/StructuredData";
 
 // Prevent SSR for the entire component to avoid hydration mismatches
@@ -19,6 +19,7 @@ const StoriesGrid = dynamic(() => Promise.resolve(StoriesGridComponent), {
 
 function StoriesGridComponent() {
   const [stories, setStories] = useState<Story[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState<"All" | "Safe" | "Euclid" | "Keter">(
     "All"
   );
@@ -39,6 +40,7 @@ function StoriesGridComponent() {
       }
 
       const allStories = await response.json();
+
       setStories(allStories || []);
     } catch (error) {
       console.error("Failed to load stories:", error);
@@ -53,10 +55,32 @@ function StoriesGridComponent() {
     loadStories();
   }, []);
 
-  const filteredStories =
-    filter === "All"
-      ? stories
-      : stories.filter((story) => story.class === filter);
+  // Enhanced filtering with search
+  const filteredStories = useMemo(() => {
+    let filtered = stories;
+
+    // Apply class filter
+    if (filter !== "All") {
+      filtered = filtered.filter((story) => story.class === filter);
+    }
+
+    // Apply search filter
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase().trim();
+      filtered = filtered.filter((story) => {
+        const titleMatch = story.title.toLowerCase().includes(searchLower);
+        const tagsMatch =
+          story.tags?.some((tag) => tag.toLowerCase().includes(searchLower)) ||
+          false;
+        const classMatch = story.class.toLowerCase().includes(searchLower);
+        const idMatch = story.id.toLowerCase().includes(searchLower);
+
+        return titleMatch || tagsMatch || classMatch || idMatch;
+      });
+    }
+
+    return filtered;
+  }, [stories, filter, searchTerm]);
 
   if (loading) {
     return <LoadingScreen />;
@@ -79,12 +103,23 @@ function StoriesGridComponent() {
       <div className="min-h-screen bg-scp-bg dark:bg-scp-bg-dark transition-colors duration-200">
         <PageHeader />
 
-        <main className="max-w-4xl mx-auto px-4 py-8">
-          <ClassFilter activeFilter={filter} onFilterChange={setFilter} />
+        <main className="max-w-4xl mx-auto px-4 sm:py-8 py-2">
+          <FilterControls
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            activeFilter={filter}
+            onFilterChange={setFilter}
+            totalStories={stories.length}
+            filteredCount={filteredStories.length}
+          />
 
           {/* Stories Grid */}
           {filteredStories.length === 0 ? (
-            <EmptyState hasStories={stories.length > 0} activeFilter={filter} />
+            <EmptyState
+              hasStories={stories.length > 0}
+              searchTerm={searchTerm}
+              activeFilter={filter}
+            />
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredStories.map((story) => (
@@ -102,25 +137,42 @@ function StoriesGridComponent() {
 
 function EmptyState({
   hasStories,
+  searchTerm,
   activeFilter,
 }: {
   hasStories: boolean;
+  searchTerm: string;
   activeFilter: string;
 }) {
-  return (
-    <div className="text-center py-12">
-      <p className="text-gray-500 dark:text-gray-400 font-mono mb-4 transition-colors duration-200">
-        {hasStories
-          ? `NO STORIES MATCH CLASS ${activeFilter.toUpperCase()} FILTER`
-          : "NO STORIES FOUND • ADD SOME MARKDOWN FILES TO /stories DIRECTORY"}
-      </p>
-      {!hasStories && (
+  if (!hasStories) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500 dark:text-gray-400 font-mono mb-4 transition-colors duration-200">
+          NO STORIES FOUND • ADD SOME MARKDOWN FILES TO /stories DIRECTORY
+        </p>
         <div className="text-sm text-gray-400 dark:text-gray-500 font-mono transition-colors duration-200">
           <p>CREATE FILES LIKE:</p>
           <p>stories/scp-001.md</p>
           <p>stories/scp-002.md</p>
         </div>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="text-center py-12">
+      <p className="text-gray-500 dark:text-gray-400 font-mono mb-4 transition-colors duration-200">
+        NO STORIES MATCH YOUR CURRENT FILTERS
+      </p>
+      <div className="text-sm text-gray-400 dark:text-gray-500 font-mono transition-colors duration-200">
+        {searchTerm && (
+          <p>Search term: &quot;{searchTerm.toUpperCase()}&quot;</p>
+        )}
+        {activeFilter !== "All" && (
+          <p>Class filter: {activeFilter.toUpperCase()}</p>
+        )}
+        <p className="mt-2">TRY DIFFERENT SEARCH TERMS OR CLEAR FILTERS</p>
+      </div>
     </div>
   );
 }

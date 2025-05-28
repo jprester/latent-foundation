@@ -15,7 +15,6 @@ const eslintConfig = [
     rules: {
       "@typescript-eslint/no-unused-vars": "warn", // Set unused variables (including imports) to warning
       "@typescript-eslint/no-explicit-any": "warn", // Set explicit 'any' to warning
-      "no-unused-vars": "warn", // Also for JS files if any
     },
   },
 ];
