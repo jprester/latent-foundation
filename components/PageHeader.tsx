@@ -3,9 +3,9 @@
 import Link from "next/link";
 
 import DarkModeToggle from "./DarkModeToggle";
+import FoundationLogo from "./FoundationLogo";
 
 interface PageHeaderProps {
-  title?: string;
   subtitle?: string;
   showBackButton?: boolean;
   backButtonText?: string;
@@ -13,7 +13,6 @@ interface PageHeaderProps {
 }
 
 export default function PageHeader({
-  title = "THE LATENT FOUNDATION",
   subtitle = "SECURE • CONTAIN • PROTECT • GENERATE",
   showBackButton = false,
   backButtonText = "← BACK TO COLLECTION",
@@ -33,10 +32,13 @@ export default function PageHeader({
           </div>
         ) : (
           <div className="flex justify-between items-center">
+            <div>
+              <FoundationLogo />
+            </div>
             <div className="text-center flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold text-scp-text dark:text-scp-text-dark font-mono transition-colors duration-200">
+              {/* <h1 className="text-2xl md:text-3xl font-bold text-scp-text dark:text-scp-text-dark font-mono transition-colors duration-200">
                 {title}
-              </h1>
+              </h1> */}
               {subtitle && (
                 <p className="text-gray-600 dark:text-gray-400 mt-2 transition-colors duration-200 hidden md:block">
                   {subtitle}
