@@ -33,7 +33,9 @@ export default function PageHeader({
         ) : (
           <div className="flex justify-between items-center">
             <div>
-              <FoundationLogo />
+              <Link href="/">
+                <FoundationLogo />
+              </Link>
             </div>
             <div className="text-center flex-1">
               {/* <h1 className="text-2xl md:text-3xl font-bold text-scp-text dark:text-scp-text-dark font-mono transition-colors duration-200">
