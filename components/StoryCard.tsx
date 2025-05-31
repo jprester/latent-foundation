@@ -12,9 +12,8 @@ interface StoryCardProps {
 
 export default function StoryCard({ story }: StoryCardProps) {
   const [imageError, setImageError] = useState(false);
-
-  const getClassColor = (className: string) => {
-    switch (className) {
+  const getClassColor = (objectClass: string) => {
+    switch (objectClass) {
       case "Safe":
         return "text-scp-safe dark:text-scp-safe-dark";
       case "Euclid":
@@ -27,6 +26,11 @@ export default function StoryCard({ story }: StoryCardProps) {
   };
 
   const thumbnailPath = getStoryThumbnail(story.id, story.thumbnail);
+
+  if (!story || !story.id || !story.title) {
+    console.warn("Invalid story data:", story);
+    return null;
+  }
 
   return (
     <Link href={`/story/${story.slug}`} className="block group">
@@ -50,7 +54,7 @@ export default function StoryCard({ story }: StoryCardProps) {
                 className={`px-2 py-1 text-xs font-mono font-bold ${getClassColor(
                   story.class
                 )} bg-scp-card/90 dark:bg-scp-card-dark/90 backdrop-blur-sm rounded-md border border-scp-border/50 dark:border-scp-border-dark/50`}>
-                {story.class.toUpperCase()}
+                {story.class?.toUpperCase()}
               </span>
             </div>
 
