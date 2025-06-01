@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Latent Foundation" }],
   creator: "Latent Foundation",
   publisher: "Latent Foundation",
-  metadataBase: new URL("https://https://latent-foundation.vercel.app/"), // Replace with your actual domain
+  metadataBase: new URL("https://latent-foundation.vercel.app/"), // Fixed URL
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -57,6 +57,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
@@ -80,21 +81,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link
-          rel="icon"
-          href="/favicon-16x16.png"
-          sizes="16x16"
-          type="image/png"
-        />
-        <link
-          rel="icon"
-          href="/favicon-32x32.png"
-          sizes="32x32"
-          type="image/png"
-        />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#0a0e16" />
         <meta name="msapplication-TileColor" content="#0a0e16" />
       </head>
