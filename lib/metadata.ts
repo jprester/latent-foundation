@@ -8,7 +8,7 @@ export function generateStoryMetadata(story: Story): Metadata {
   // Use the story's thumbnail image if available, otherwise use a default
   const imageUrl = story.thumbnail
     ? `/images/${story.slug}/${story.thumbnail}`
-    : "/images/og-default.svg";
+    : "/images/og-default.png";
 
   return {
     title,
@@ -59,7 +59,7 @@ export function generateHomeMetadata(): Metadata {
         "Explore a collection of SCP-inspired short stories written with AI.",
       images: [
         {
-          url: "/images/og-default.svg",
+          url: "/images/og-default.png",
           width: 1200,
           height: 630,
           alt: "Latent Foundation - SCP Stories Collection",

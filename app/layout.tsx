@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Latent Foundation",
     images: [
       {
-        url: "/images/og-default.svg", // Using SVG for now, replace with PNG later
+        url: "/images/og-default.png", // Using SVG for now, replace with PNG later
         width: 1200,
         height: 630,
         alt: "Latent Foundation - SCP Stories",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: "Latent Foundation",
     description:
       "A collection of SCP-inspired short stories written with the help of AI.",
-    images: ["/images/og-default.svg"], // Same as OG image
+    images: ["/images/og-default.png"], // Same as OG image
   },
   robots: {
     index: true,
