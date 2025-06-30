@@ -1,5 +1,5 @@
 ---
-title: "SCPG-029"
+title: "SCPG-029: The Threshold Protocol"
 class: "Keter"
 tags: ["dangerous", "high-risk", "breach-risk", "interdimensional", "doorway"]
 date: "2025-06-30"

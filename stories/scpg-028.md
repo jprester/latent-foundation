@@ -1,5 +1,5 @@
 ---
-title: "SCPG-028"
+title: "SCPG-028: The Mimic's Hunt"
 class: "Euclid"
 tags: ["unpredictable", "moderate-risk", "supenatural", "serial"]
 date: "2025-06-30"

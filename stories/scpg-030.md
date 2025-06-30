@@ -1,13 +1,11 @@
 ---
-title: "SCPG-030"
+title: "SCPG-030: The Digital Demiurge"
 class: "Keter"
 tags: ["dangerous", "high-risk", "breach-risk", "anomalous", "mysterious"]
 date: "2025-06-30"
 ---
 
-# The Digital Demiurge
-
-**Item #:** SCPG-030
+# SCPG-030: The Digital Demiurge
 
 **Object Class:** Keter
 
