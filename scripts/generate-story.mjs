@@ -13,11 +13,25 @@ const anthropicModels = {
   claude_4_6_opus: "claude-opus-4-6",
 };
 
+const openRouterModels = {
+  kimi_2_5: "moonshotai/kimi-k2",
+  kimi_2_5_instruct: "moonshotai/kimi-k2-instruct",
+};
+
 // Configuration
 const CONFIG = {
-  apiUrl: "https://api.anthropic.com/v1/messages",
   storiesDir: path.join(process.cwd(), "stories"),
-  model: anthropicModels.claude_4_6_sonnet,
+  defaultProvider: "openrouter",
+  providers: {
+    anthropic: {
+      apiUrl: "https://api.anthropic.com/v1/messages",
+      defaultModel: anthropicModels.claude_4_6_sonnet,
+    },
+    openrouter: {
+      apiUrl: "https://openrouter.ai/api/v1/chat/completions",
+      defaultModel: openRouterModels.kimi_2_5,
+    },
+  },
   temperature: 0.7,
   promptTemplates: {
     safe: "Create a Safe-class SCP entry about {theme}. Focus on minimal containment requirements and low risk to personnel. The anomaly should be well-understood and predictable.",
@@ -79,7 +93,7 @@ Return ONLY the story content without any markdown frontmatter or metadata - I'l
   return fullPrompt;
 }
 
-async function callClaudeAPI(prompt) {
+async function callAnthropicAPI(prompt, model) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
 
   if (!apiKey) {
@@ -87,21 +101,11 @@ async function callClaudeAPI(prompt) {
     console.log("💡 Get your API key from: https://console.anthropic.com/");
     console.log("💡 Add to .env file: ANTHROPIC_API_KEY=your-key-here");
     console.log('💡 Or set with: export ANTHROPIC_API_KEY="your-key-here"');
-    console.log(
-      "💡 Make sure .env file is in your project root and install dotenv: npm install dotenv",
-    );
     process.exit(1);
   }
 
-  console.log("🤖 Generating story with Claude...");
-  console.log(
-    `🔑 Using API key: ${apiKey.substring(0, 8)}...${apiKey.substring(
-      apiKey.length - 4,
-    )}`,
-  );
-
   try {
-    const response = await fetch(CONFIG.apiUrl, {
+    const response = await fetch(CONFIG.providers.anthropic.apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -109,29 +113,110 @@ async function callClaudeAPI(prompt) {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: CONFIG.model,
+        model,
         max_tokens: 4000,
         temperature: CONFIG.temperature,
-        messages: [
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
+        messages: [{ role: "user", content: prompt }],
       }),
     });
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`API Error: ${response.status} - ${error}`);
+      throw new Error(`Anthropic API Error: ${response.status} - ${error}`);
     }
 
     const data = await response.json();
-    return data.content[0].text;
+    return data.content?.[0]?.text ?? "";
   } catch (error) {
-    console.error("❌ Error calling Claude API:", error.message);
+    console.error("❌ Error calling Anthropic API:", error.message);
     process.exit(1);
   }
+}
+
+async function callOpenRouterAPI(prompt, model) {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+
+  if (!apiKey) {
+    console.error("❌ OPENROUTER_API_KEY environment variable not set");
+    console.log("💡 Get your API key from: https://openrouter.ai/keys");
+    console.log("💡 Add to .env file: OPENROUTER_API_KEY=your-key-here");
+    console.log('💡 Or set with: export OPENROUTER_API_KEY="your-key-here"');
+    process.exit(1);
+  }
+
+  try {
+    const response = await fetch(CONFIG.providers.openrouter.apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+        "HTTP-Referer":
+          process.env.OPENROUTER_SITE_URL ||
+          "https://github.com/jprester/latent-foundation",
+        "X-Title": "Latent Foundation Story Generator",
+      },
+      body: JSON.stringify({
+        model,
+        temperature: CONFIG.temperature,
+        max_tokens: 4000,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`OpenRouter API Error: ${response.status} - ${error}`);
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content;
+
+    if (typeof content === "string") {
+      return content;
+    }
+
+    throw new Error("OpenRouter response did not include story content");
+  } catch (error) {
+    console.error("❌ Error calling OpenRouter API:", error.message);
+    process.exit(1);
+  }
+}
+
+function resolveProvider(providerRaw) {
+  const provider = (providerRaw || CONFIG.defaultProvider).toLowerCase();
+
+  if (!Object.hasOwn(CONFIG.providers, provider)) {
+    console.error(
+      `❌ Invalid provider "${providerRaw}". Must be: anthropic or openrouter`,
+    );
+    process.exit(1);
+  }
+
+  return provider;
+}
+
+function resolveModel(provider, modelRaw) {
+  if (!modelRaw) {
+    return CONFIG.providers[provider].defaultModel;
+  }
+
+  if (provider === "anthropic" && Object.hasOwn(anthropicModels, modelRaw)) {
+    return anthropicModels[modelRaw];
+  }
+
+  if (provider === "openrouter" && Object.hasOwn(openRouterModels, modelRaw)) {
+    return openRouterModels[modelRaw];
+  }
+
+  return modelRaw;
+}
+
+async function callModelAPI(prompt, provider, model) {
+  if (provider === "anthropic") {
+    return callAnthropicAPI(prompt, model);
+  }
+
+  return callOpenRouterAPI(prompt, model);
 }
 
 function generateTags(theme, scpClass, additionalParams) {
@@ -234,9 +319,11 @@ OPTIONAL:
   --thumbnail Image filename for thumbnail (e.g., "thumbnail.jpg")
   --images    Comma-separated image files (e.g., "image1.jpg,image2.jpg")
   --number    Specific SCP number (auto-generated if not provided)
+  --provider  Model provider: openrouter (default) or anthropic
+  --model     Model id or alias for selected provider
 
 EXAMPLES:
-  # Basic story
+  # Basic story (uses default OpenRouter + Kimi model)
   node scripts/generate-story.mjs --theme "reality-bending mirror" --class "Euclid"
   
   # Detailed story with custom elements
@@ -254,10 +341,18 @@ EXAMPLES:
     --thumbnail "door-thumbnail.jpg" \\
     --images "door-closed.jpg,door-open.jpg,incident-log.jpg"
 
+  # OpenRouter with Kimi (low-cost creative writing)
+  node scripts/generate-story.mjs \
+    --theme "impossible radio station" \
+    --class "Euclid" \
+    --provider "openrouter" \
+    --model "kimi_2_5"
+
 SETUP:
-  1. Get Claude API key: https://console.anthropic.com/
-  2. Set environment variable: export ANTHROPIC_API_KEY="your-key"
-  3. Run the command with your parameters
+  1. Anthropic: export ANTHROPIC_API_KEY="your-key"
+  2. OpenRouter: export OPENROUTER_API_KEY="your-key"
+  3. Optional OpenRouter referer: export OPENROUTER_SITE_URL="https://your-site.example"
+  4. Run the command with your parameters
 
 📖 Generated stories will be saved to the /stories directory
 `);
@@ -291,16 +386,21 @@ async function main() {
     ? parseInt(params.number)
     : getNextScpNumber();
 
+  const provider = resolveProvider(params.provider);
+  const model = resolveModel(provider, params.model);
+
   console.log(`📝 Generating SCPG-${scpNumber.toString().padStart(3, "0")}`);
   console.log(`🎯 Theme: ${params.theme}`);
   console.log(`🔒 Class: ${scpClass}`);
+  console.log(`🧠 Provider: ${provider}`);
+  console.log(`🛰️  Model: ${model}`);
   if (params.tags) console.log(`🏷️  Tags: ${params.tags.join(", ")}`);
   console.log("");
 
   try {
     // Generate the story
     const prompt = generatePrompt(params.theme, scpClass, params);
-    const story = await callClaudeAPI(prompt);
+    const story = await callModelAPI(prompt, provider, model);
 
     // Create the markdown file
     const { filename, filepath } = createMarkdownFile(
