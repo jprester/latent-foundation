@@ -20,6 +20,8 @@ export default function StoryCard({ story }: StoryCardProps) {
         return "text-scp-euclid dark:text-scp-euclid-dark";
       case "Keter":
         return "text-scp-keter dark:text-scp-keter-dark";
+      case "Apollyon":
+        return "text-scp-keter dark:text-scp-keter-dark";
       default:
         return "text-scp-muted dark:text-scp-muted-dark";
     }

@@ -1,7 +1,7 @@
 export interface Story {
   id: string;
   title: string;
-  class: "Safe" | "Euclid" | "Keter";
+  class: "Safe" | "Euclid" | "Keter" | "Apollyon";
   tags: string[];
   date: string;
   content: string;
@@ -12,7 +12,7 @@ export interface Story {
 
 export interface StoryMatter {
   title: string;
-  class: "Safe" | "Euclid" | "Keter";
+  class: "Safe" | "Euclid" | "Keter" | "Apollyon";
   tags: string[];
   date: string;
   thumbnail?: string;
