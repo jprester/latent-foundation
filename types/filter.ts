@@ -1,1 +1,1 @@
-export type FilterType = "All" | "Safe" | "Euclid" | "Keter";
+export type FilterType = "All" | "Safe" | "Euclid" | "Keter" | "Apollyon";

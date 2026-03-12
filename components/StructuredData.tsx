@@ -1,5 +1,3 @@
-"use client";
-
 import { Story } from "@/types/story";
 
 interface StructuredDataProps {

@@ -1,134 +1,82 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState, useCallback } from "react";
-import { Story } from "@/types/story";
-import LoadingScreen from "@/components/LoadingScreen";
-import ErrorScreen from "@/components/ErrorScreen";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+
+import { getStoryBySlug, getAllStorySlugs } from "@/lib/stories";
 import PageHeader from "@/components/PageHeader";
 import StoryContent from "@/components/StoryContent";
+import StructuredData from "@/components/StructuredData";
 
 interface StoryPageProps {
-  params: Promise<{
-    slug: string;
-  }>;
+  params: Promise<{ slug: string }>;
 }
 
-export default function StoryPage({ params }: StoryPageProps) {
-  const [story, setStory] = useState<Story | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [slug, setSlug] = useState<string>("");
+export async function generateStaticParams() {
+  const slugs = getAllStorySlugs();
+  return slugs.map((slug) => ({ slug }));
+}
 
-  useEffect(() => {
-    const getSlug = async () => {
-      const resolvedParams = await params;
-      setSlug(resolvedParams.slug);
-    };
-    getSlug();
-  }, [params]);
-
-  const loadStory = useCallback(async () => {
-    if (!slug) return;
-
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/stories/${slug}`);
-
-      if (response.ok) {
-        const storyData = await response.json();
-        setStory(storyData);
-        // Update page metadata dynamically
-        if (storyData) {
-          document.title = `${storyData.title} | The Latent Foundation`;
-        }
-
-        // Add structured data for the story
-        const existingScript = document.querySelector(
-          'script[type="application/ld+json"]'
-        );
-        if (!existingScript) {
-          const script = document.createElement("script");
-          script.type = "application/ld+json";
-          script.innerHTML = JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            headline: storyData.title,
-            description: `A ${
-              storyData.class
-            } class SCP story featuring ${storyData.tags
-              ?.slice(0, 3)
-              .join(", ")}`,
-            author: {
-              "@type": "Organization",
-              name: "The Latent Foundation",
-            },
-            publisher: {
-              "@type": "Organization",
-              name: "The Latent Foundation",
-            },
-            datePublished: storyData.date,
-            dateModified: storyData.date,
-            genre: ["Science Fiction", "Horror", "Creative Writing"],
-            keywords: storyData.tags?.join(", "),
-            articleSection: `SCP Class ${storyData.class}`,
-            inLanguage: "en-US",
-          });
-          document.head.appendChild(script);
-        }
-      } else {
-        setStory(null);
-      }
-    } catch (error) {
-      console.error("Failed to load story:", error);
-      setStory(null);
-    } finally {
-      setLoading(false);
-    }
-  }, [slug]); // slug is a dependency of loadStory
-
-  useEffect(() => {
-    if (slug) {
-      loadStory();
-    }
-  }, [slug, loadStory]); // Add loadStory to the dependency array
-
-  if (loading) {
-    return (
-      <LoadingScreen title="LOADING..." subtitle="ACCESSING SECURE FILE" />
-    );
-  }
+export async function generateMetadata({
+  params,
+}: StoryPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const story = getStoryBySlug(slug);
 
   if (!story) {
-    return (
-      <ErrorScreen
-        title="FILE NOT FOUND"
-        message="DOCUMENT MAY BE CLASSIFIED OR REDACTED"
-        showRetryButton={false}
-        showBackButton={true}
-      />
-    );
+    return { title: "Story Not Found" };
+  }
+
+  const description = `A ${story.class} class SCP story featuring ${story.tags?.slice(0, 3).join(", ")}`;
+
+  return {
+    title: story.title,
+    description,
+    openGraph: {
+      title: story.title,
+      description,
+      type: "article",
+      publishedTime: story.date,
+      tags: story.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: story.title,
+      description,
+    },
+  };
+}
+
+export default async function StoryPage({ params }: StoryPageProps) {
+  const { slug } = await params;
+  const story = getStoryBySlug(slug);
+
+  if (!story) {
+    notFound();
   }
 
   return (
-    <div className="min-h-screen bg-scp-bg dark:bg-scp-bg-dark transition-colors duration-200">
-      <PageHeader
-        showBackButton={true}
-        backButtonText="← BACK TO COLLECTION"
-        backButtonHref="/"
-      />
+    <>
+      <StructuredData story={story} />
+      <div className="min-h-screen bg-scp-bg dark:bg-scp-bg-dark transition-colors duration-200">
+        <PageHeader
+          showBackButton={true}
+          backButtonText="← BACK TO COLLECTION"
+          backButtonHref="/"
+        />
 
-      <main className="max-w-4xl mx-auto md:px-4 md:py-8">
-        <StoryContent story={story} />
+        <main className="max-w-4xl mx-auto md:px-4 md:py-8">
+          <StoryContent story={story} />
 
-        {/* Navigation */}
-        <div className="mt-8 text-center">
-          <Link
-            href="/"
-            className="inline-block rounded  border-scp-border dark:border-scp-border-dark bg-scp-accent dark:bg-scp-accent-dark text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 dark:hover:bg-red-600 transition-colors mb-4">
-            RETURN TO COLLECTION
-          </Link>
-        </div>
-      </main>
-    </div>
+          {/* Navigation */}
+          <div className="mt-8 text-center">
+            <Link
+              href="/"
+              className="inline-block rounded border-scp-border dark:border-scp-border-dark bg-scp-accent dark:bg-scp-accent-dark text-white px-6 py-3 font-mono font-semibold hover:bg-red-800 dark:hover:bg-red-600 transition-colors mb-4">
+              RETURN TO COLLECTION
+            </Link>
+          </div>
+        </main>
+      </div>
+    </>
   );
 }
