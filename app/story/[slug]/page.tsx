@@ -2,7 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-import { getStoryBySlug, getAllStorySlugs } from "@/lib/stories";
+import {
+  getStoryBySlug,
+  getAllStorySlugs,
+  getStoryExcerpt,
+  getStoryThumbnailPath,
+} from "@/lib/stories";
 import PageHeader from "@/components/PageHeader";
 import StoryContent from "@/components/StoryContent";
 import StructuredData from "@/components/StructuredData";
@@ -26,7 +31,9 @@ export async function generateMetadata({
     return { title: "Story Not Found" };
   }
 
-  const description = `A ${story.class} class SCP story featuring ${story.tags?.slice(0, 3).join(", ")}`;
+  const description = getStoryExcerpt(story.content);
+  const thumbnailPath = getStoryThumbnailPath(story);
+  const ogImage = thumbnailPath || "/images/og-default.png";
 
   return {
     title: story.title,
@@ -37,11 +44,20 @@ export async function generateMetadata({
       type: "article",
       publishedTime: story.date,
       tags: story.tags,
+      images: [
+        {
+          url: ogImage,
+          width: 1024,
+          height: 576,
+          alt: story.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: story.title,
       description,
+      images: [ogImage],
     },
   };
 }

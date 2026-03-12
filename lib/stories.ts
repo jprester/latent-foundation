@@ -64,6 +64,52 @@ export function getStoryBySlug(slug: string): Story | null {
   };
 }
 
+export function getStoryExcerpt(content: string, maxLength = 160): string {
+  // Try to extract from the Description section first
+  const descMatch = content.match(
+    /\*\*Description[:\s]*\*\*\s*([\s\S]*?)(?=\n\*\*(?:Addendum|Recovery|Incident|Discovery|Note)|---|\n##|$)/i
+  );
+
+  const source = descMatch ? descMatch[1] : content;
+
+  const cleaned = source
+    .replace(/^#+ .+$/gm, "")           // remove headers
+    .replace(/\*\*[^*]*\*\*/g, "")       // remove bold markers
+    .replace(/\[REDACTED\]/gi, "[REDACTED]")
+    .replace(/█+/g, "")
+    .replace(/\n+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (cleaned.length <= maxLength) return cleaned;
+
+  // Cut at sentence boundary
+  const truncated = cleaned.slice(0, maxLength);
+  const lastPeriod = truncated.lastIndexOf(".");
+  if (lastPeriod > maxLength * 0.5) {
+    return truncated.slice(0, lastPeriod + 1);
+  }
+
+  return truncated.replace(/\s\S*$/, "") + "...";
+}
+
+export function getStoryThumbnailPath(story: Story): string | null {
+  const thumbnailName = story.thumbnail || "thumbnail.jpg";
+  const filePath = path.join(
+    process.cwd(),
+    "public",
+    "images",
+    story.id,
+    thumbnailName
+  );
+
+  if (fs.existsSync(filePath)) {
+    return `/images/${story.id}/${thumbnailName}`;
+  }
+
+  return null;
+}
+
 export function getAllStorySlugs(): string[] {
   if (!fs.existsSync(storiesDirectory)) {
     return [];
