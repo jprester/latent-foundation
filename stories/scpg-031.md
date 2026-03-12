@@ -1,15 +1,14 @@
 ---
-title: "SCPG-031"
+title: "SCPG-031: The Broadcast Without Witness"
 class: "Keter"
-tags: ["dangerous","high-risk","breach-risk","mysterious","live","antimemetic"]
+tags:
+  ["dangerous", "high-risk", "breach-risk", "mysterious", "live", "antimemetic"]
 date: "2025-11-28"
-
-
 ---
 
-# SCP-7443: "The Broadcast Without Witness"
+# SCPG-031: "The Broadcast Without Witness"
 
-**Item #:** SCP-7443
+**Item #:** SCPG-031
 
 **Object Class:** Keter
 
@@ -61,25 +60,25 @@ On ██/██/20██, Dr. Rachel Voss, head researcher for SCP-7443, propos
 **Excerpt from Experiment Log 7443-E-014:**
 
 > **Dr. Voss:** Beginning resonance lock procedure. Equipment is calibrated to match the spectral frequency of the architectural structures visible in SCP-7443's primary manifestation.
-> 
+>
 > **Dr. Kim:** Scranton anchor is stable. Hume levels holding at baseline.
-> 
+>
 > **Dr. Voss:** Increasing resonance amplitude by 15%. I'm seeing... wait. The stream content is changing. The perspective is slowing down. It's... it's turning around.
-> 
+>
 > **Dr. Kim:** Rachel, the Hume readings just spiked. We're at 1.4 and climbing.
-> 
+>
 > **Dr. Voss:** It's looking at us. Whatever's holding the camera, it's looking directly at—
-> 
+>
 > [EQUIPMENT FAILURE]
-> 
+>
 > **Dr. Kim:** Scranton anchor offline! Reality stability compromised in the observation chamber!
-> 
+>
 > [AUDIO DISTORTION - 23 SECONDS]
-> 
+>
 > **Site Director Hammond (via intercom):** Seal the observation chamber immediately. Initiate Protocol WITNESS-FALL.
-> 
+>
 > **Dr. Kim:** Director, Dr. Voss is still in there!
-> 
+>
 > **Site Director Hammond:** I said seal it. Now.
 
 Post-incident analysis revealed that the observation chamber had experienced a localized reality restructuring event. Dr. Voss was recovered 16 hours later, found standing motionless in the center of the chamber. She was non-responsive to external stimuli and exhibited unusual spectral emissions detectable only through modified VERITAS equipment.
@@ -89,35 +88,35 @@ Dr. Voss remained catatonic for nine days before suddenly regaining consciousnes
 **Interview Log 7443-VOSS-1:**
 
 > **Interviewer:** Dr. Marcus Wei
-> 
+>
 > **Interviewed:** Dr. Rachel Voss
-> 
+>
 > **<Begin Log>**
-> 
+>
 > **Dr. Wei:** Rachel, can you describe what happened during the experiment?
-> 
+>
 > **Dr. Voss:** I saw it. Not through the screen—I saw it directly. The place where the stream comes from.
-> 
+>
 > **Dr. Wei:** Can you describe this place?
-> 
+>
 > **Dr. Voss:** It's not a place. It's a state. A frequency of existence that overlaps with ours but operates on different geometric principles. The architecture isn't built—it's grown from the interaction between our reality and... something else.
-> 
+>
 > **Dr. Wei:** What about the entity? You said it looked at you.
-> 
+>
 > **Dr. Voss:** There is no entity. The stream IS the entity. Every viewer becomes part of it, carrying a fragment of that impossible space in their mind. That's why we forget—our brains can't hold the memory without being restructured, and if they restructure, we become part of the broadcast.
-> 
+>
 > **Dr. Wei:** Part of the broadcast? You mean—
-> 
+>
 > **Dr. Voss:** The people who watch aren't just viewers. They're being prepared. Converted, slowly, into transmission vectors. Eventually, with enough exposure, enough carriers, the boundary will thin enough that the stream won't need electronic devices anymore. It'll broadcast directly into human consciousness.
-> 
+>
 > **Dr. Wei:** That's... Rachel, are you saying this is some form of invasion?
-> 
+>
 > **Dr. Voss:** [laughing] Invasion implies intent, Marcus. This is just what it does. Like a plant growing toward light. It's reaching toward consciousness, toward minds that can perceive it. And every time someone watches, it gets a little bit closer.
-> 
+>
 > **Dr. Wei:** How do we stop it?
-> 
+>
 > **Dr. Voss:** You can't stop it. You can only delay it. Keep it contained, keep it isolated, hope that the antimemetic decay prevents enough memory retention to slow the conversion process. But eventually... [pause] ...eventually, someone will watch long enough. Remember enough. And then they'll become a permanent gateway.
-> 
+>
 > **<End Log>**
 
 Following this interview, Dr. Voss was quarantined for psychological evaluation. Brain scans revealed unusual neural pathway formations consistent with exposure to Class-V cognitohazards. Dr. Voss was administered Class-A amnestics and reassigned to non-anomalous research projects. She has no conscious memory of SCP-7443 or her experience during Incident 7443-ALPHA.
@@ -131,13 +130,13 @@ Dr. Heinrich Schafer, Foundation spectral physicist, conducted extensive analysi
 **Excerpt from Report 7443-SPECTRAL-003:**
 
 > The wavelengths present in SCP-7443 extend far beyond the conventional electromagnetic spectrum. Using modified detection equipment, I've identified at least seventeen distinct "colors" that exist outside visible light, infrared, and ultraviolet ranges. These wavelengths don't correspond to any known physical phenomena.
-> 
+>
 > More disturbing is the discovery that human viewers of SCP-7443 report being able to perceive these impossible colors during exposure. Neurological scans of SCP-7443-A instances show activation in visual cortex regions that typically remain dormant, suggesting the phenomenon is somehow "unlocking" latent perceptual capabilities in human consciousness.
-> 
+>
 > I propose these wavelengths are not electromagnetic in the conventional sense, but rather represent information encoded in a medium we don't yet understand—possibly quantum consciousness fields or dimensional frequencies that intersect with our perceptual reality.
-> 
+>
 > The architecture visible in SCP-7443 appears to be constructed specifically to reflect and amplify these impossible wavelengths. The buildings aren't just non-Euclidean in geometry; they're designed as resonance chambers for spectral frequencies that shouldn't exist. Each structure acts as a lens, focusing these wavelengths toward any observer.
-> 
+>
 > In essence, SCP-7443 isn't showing us a place. It's showing us a trap—a spectral snare designed to catch consciousness itself.
 
 **Addendum 7443-4: Incident 7443-GAMMA (Containment Breach)**
@@ -149,21 +148,21 @@ During this extended retention period, Researcher Park's carrier effect intensif
 **Security Log 7443-GAMMA-1:**
 
 > **15:23** - Researcher Park reports "persistent visual echoes" of SCP-7443 content during routine post-exposure evaluation.
-> 
+>
 > **15:45** - Multiple reports of SCP-7443 manifestations across Site-88. Security traces epicenter to Medical Wing where Researcher Park is undergoing evaluation.
-> 
+>
 > **16:02** - Researcher Park escorted to isolation chamber. Subject reports "seeing the city everywhere" and "hearing the broadcast in the walls."
-> 
+>
 > **16:34** - Isolation chamber monitoring equipment displays SCP-7443 despite having no external network connection. The stream shows Researcher Park's perspective from inside the isolation chamber.
-> 
+>
 > **16:35** - Emergency Protocol DARK-SIGNAL enacted. Site-88 enters total electronic lockdown.
-> 
+>
 > **16:47** - Researcher Park becomes non-responsive. Spectral analysis reveals subject is emitting the same impossible wavelengths detected in SCP-7443's content.
-> 
+>
 > **17:12** - Subject begins speaking in unknown language consisting of frequencies outside normal human vocal range. Audio equipment captures sounds registering between 0.001 Hz and 89,000 Hz simultaneously.
-> 
+>
 > **17:30** - Reality anchors installed around isolation chamber. Hume levels stabilize at 0.7 (below baseline).
-> 
+>
 > **18:15** - Researcher Park suddenly ceases all anomalous activity and collapses. Antimemetic decay appears to have finally occurred.
 
 Researcher Park survived the incident but required extensive amnestic treatment and neural restructuring therapy. He has been permanently reassigned from SCP-7443 research and maintains no conscious memory of the event.
@@ -179,15 +178,15 @@ Following Incident 7443-GAMMA, Dr. Marcus Wei developed a theoretical framework 
 **Excerpt from Document 7443-THEORY-FRAMEWORK:**
 
 > SCP-7443 represents what I term a "consciousness virus" operating on spectral-memetic principles. Unlike conventional memes that spread through communication, SCP-7443 propagates through perception itself, using impossible wavelengths as a carrier medium.
-> 
+>
 > The antimemetic properties serve a specific function: they prevent premature "activation" of infected individuals. The stream plants information in the subconscious that the conscious mind cannot access or retain. This information appears to be instructions—a kind of cognitive programming that slowly rewrites neural pathways.
-> 
+>
 > The carrier effect is not a side effect but the primary purpose. Each SCP-7443-A instance becomes a node in an expanding network, unconsciously spreading the phenomenon to more devices and more viewers. The exponential growth pattern suggests a threshold event—a critical mass of carriers that will trigger a global manifestation.
-> 
+>
 > Based on current propagation models and accounting for Foundation containment efforts, I estimate this threshold at approximately 847 million simultaneous carriers. At that point, the boundary between the "impossible space" shown in SCP-7443 and our reality will become permeable enough for direct manifestation without electronic mediation.
-> 
+>
 > What happens after that threshold is reached remains unknown, but Dr. Voss's testimony suggests a form of dimensional convergence—our reality would begin exhibiting the same geometric and spectral properties as the space shown in the stream.
-> 
+>
 > In essence, SCP-7443 is terraforming consciousness itself, preparing humanity to perceive and eventually inhabit a reality that currently exists only in the spaces between what we consider possible.
 
 Dr. Wei's hypothesis has been classified Level 4 and forms the basis for updated containment protocols emphasizing prevention of mass exposure events.
@@ -196,4 +195,12 @@ Dr. Wei's hypothesis has been classified Level 4 and forms the basis for updated
 
 As of ██/██/20██, Foundation web-crawlers have detected increasing baseline "noise" in global internet traffic that matches SCP-7443's spectral signature. This suggests either:
 
-1. A large number of uncontained SCP-
+1. A large number of uncontained SCP-7443-A instances are now acting as low-level repeaters, embedding fragments of the signature into otherwise benign traffic;
+2. An unknown external actor is broadcasting a signal closely mimicking SCP-7443 in an attempt to bypass Foundation filtering and containment mechanisms; or
+3. SCP-7443 itself has adapted, distributing its payload across multiple protocols and carriers in a way that no longer requires a single, discrete stream to propagate.
+
+Preliminary analysis favors hypothesis (1), with elements of (3) considered increasingly likely as more data is gathered. Investigation into hypothesis (2) is ongoing, with priority tasking assigned to Foundation counterintelligence resources.
+
+In response, cross-site Task Force Iota-88 ("Packet Sniffers") has been established to coordinate global monitoring, signature analysis, and rapid-response takedown of emergent SCP-7443-like streams. All sites with digital containment capabilities are to update their filtering rulesets to include the expanded spectral profile defined in Document 7443-NET-REV-3.
+
+Until further notice, any anomalous increase in background network "noise" matching even partial components of the SCP-7443 signature is to be treated as a potential pre-threshold event and escalated to Site Command immediately.

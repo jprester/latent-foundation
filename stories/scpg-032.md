@@ -1,15 +1,21 @@
 ---
-title: "SCPG-032"
+title: "SCPG-032: The Aria of the Outer Dark"
 class: "Euclid"
-tags: ["unpredictable","moderate-risk","mysterious","sound","cognitohazard","audio"]
+tags:
+  [
+    "unpredictable",
+    "moderate-risk",
+    "mysterious",
+    "sound",
+    "cognitohazard",
+    "audio",
+  ]
 date: "2026-03-12"
-
-
 ---
 
-# SCP-7741: The Aria of the Outer Dark
+# SCPG-032: The Aria of the Outer Dark
 
-**Item #:** SCP-7741
+**Item #:** SCPG-032
 
 **Object Class:** Euclid
 
@@ -60,14 +66,14 @@ A "Neutralized Variant" of SCP-7741 has been developed by Foundation audio engin
 
 **Addendum 7741-A: Initial Detection Report**
 
-*Filed by: Dr. Yusuf Adeyemi, DAA Astronomical Lead, Site-77*
-*Date: ██/██/2009*
+_Filed by: Dr. Yusuf Adeyemi, DAA Astronomical Lead, Site-77_
+_Date: ██/██/2009_
 
 At approximately 03:14 local time, OUTPOST-MERIDIAN's automated monitoring system flagged an anomalous signal on the hydrogen line band. I was notified and arrived at the observation suite at approximately 03:40. The signal had been ongoing for approximately 26 minutes at that point.
 
 My initial assumption was terrestrial interference — a satellite, a military transmission, or equipment malfunction. Standard diagnostic checks returned normal. The signal was clearly extraterrestrial in origin based on Doppler shift analysis.
 
-What struck me immediately, even in raw spectral form on the display, was the structure. I have been working in radio astronomy for nineteen years. I have seen pulsars, quasars, fast radio bursts, everything the universe throws at us. This was different. This looked, for lack of a better word, *deliberate*.
+What struck me immediately, even in raw spectral form on the display, was the structure. I have been working in radio astronomy for nineteen years. I have seen pulsars, quasars, fast radio bursts, everything the universe throws at us. This was different. This looked, for lack of a better word, _deliberate_.
 
 I made the decision, which I now recognize as a significant error in judgment, to route the signal to the observation suite's audio output to hear it directly. I was present in the suite with two graduate assistants, ████ ████ and ██████ ███████, neither of whom had Foundation clearance.
 
@@ -85,8 +91,8 @@ I do not know what is sending this signal. I do not know what it wants. I am not
 
 **Addendum 7741-B: Xenolinguistics Consultation Summary**
 
-*Date: ██/██/2011*
-*Prepared by: Foundation Xenolinguistics Division, in consultation with external advisors operating under Class-A information restrictions*
+_Date: ██/██/2011_
+_Prepared by: Foundation Xenolinguistics Division, in consultation with external advisors operating under Class-A information restrictions_
 
 After eighteen months of analysis of the Neutralized Variant, the Xenolinguistics Division offers the following summary findings:
 
@@ -94,19 +100,19 @@ After eighteen months of analysis of the Neutralized Variant, the Xenolinguistic
 
 2. The signal contains what may be a form of nested indexical structure — meaning it appears to reference itself, and to reference the act of being received. This is highly unusual. Human language contains self-referential elements, but not of this kind or complexity.
 
-3. The signal may be, in some sense, *responsive* — that is, its structure appears to shift in ways that correlate with the timing and duration of previous detection events. This is deeply anomalous. If accurate, it would suggest either (a) the source of the signal has knowledge of our detection events, which should be physically impossible given light-speed communication delays at interstellar distances, or (b) the signal's self-referential structure creates an illusion of responsiveness that is an artifact of its encoding. We cannot currently distinguish between these possibilities.
+3. The signal may be, in some sense, _responsive_ — that is, its structure appears to shift in ways that correlate with the timing and duration of previous detection events. This is deeply anomalous. If accurate, it would suggest either (a) the source of the signal has knowledge of our detection events, which should be physically impossible given light-speed communication delays at interstellar distances, or (b) the signal's self-referential structure creates an illusion of responsiveness that is an artifact of its encoding. We cannot currently distinguish between these possibilities.
 
 4. We have been unable to extract semantic content. If the signal is a message, we cannot read it. We can only confirm that it appears to be one.
 
-**Note from Dr. Osei:** I want to be careful about the word "message." We are pattern-recognition animals. We find faces in clouds. The fact that this signal *looks* intentional and *looks* responsive does not mean it is. I believe it is. But I want the record to reflect that I am aware of the cognitive biases at work here, and that my belief is not the same as evidence.
+**Note from Dr. Osei:** I want to be careful about the word "message." We are pattern-recognition animals. We find faces in clouds. The fact that this signal _looks_ intentional and _looks_ responsive does not mean it is. I believe it is. But I want the record to reflect that I am aware of the cognitive biases at work here, and that my belief is not the same as evidence.
 
 ---
 
 **Addendum 7741-C: Incident Log — Exposure Event 7741-14**
 
-*Date: ██/██/2014*
-*Subject: Junior Researcher Amara Solís (Level 2 clearance, cognitive baseline score: 94th percentile)*
-*Supervising Psychologist: Dr. Henning Brandt*
+_Date: ██/██/2014_
+_Subject: Junior Researcher Amara Solís (Level 2 clearance, cognitive baseline score: 94th percentile)_
+_Supervising Psychologist: Dr. Henning Brandt_
 
 **[Transcript excerpt, CSC-3 observation log, 00:00 – 12:47]**
 
@@ -120,7 +126,7 @@ After eighteen months of analysis of the Neutralized Variant, the Xenolinguistic
 
 **[07:00]** Subject non-responsive to verbal prompts. Breathing regular. EEG readings showing pattern not previously documented in any exposure event — a slow, rhythmic oscillation across all monitored regions simultaneously. Dr. Brandt notes this in real time and flags it for review.
 
-**[10:55]** Thirty-five seconds before the mandatory cutoff. Subject suddenly turns to face the observation window directly. This is notable because the subject could not see through the one-way glass. She appears to be looking at Dr. Brandt specifically. She says, clearly and calmly: *"It knows you're listening."*
+**[10:55]** Thirty-five seconds before the mandatory cutoff. Subject suddenly turns to face the observation window directly. This is notable because the subject could not see through the one-way glass. She appears to be looking at Dr. Brandt specifically. She says, clearly and calmly: _"It knows you're listening."_
 
 **[11:30]** Playback terminated per protocol. Subject took approximately four minutes to fully return to baseline responsiveness.
 
@@ -132,7 +138,7 @@ After eighteen months of analysis of the Neutralized Variant, the Xenolinguistic
 
 **Dr. Brandt:** You said "it knows you're listening." What did you mean by that?
 
-**Researcher Solís:** *(long pause)* I don't know. It felt like something I was told. Not in words. I don't know how to explain it better than that. I'm sorry.
+**Researcher Solís:** _(long pause)_ I don't know. It felt like something I was told. Not in words. I don't know how to explain it better than that. I'm sorry.
 
 **Dr. Brandt's Post-Incident Note:** I have reviewed this recording seventeen times. I cannot explain how Researcher Solís knew I was present behind the observation glass, or why she spoke that particular phrase at that particular moment. I have considered the possibility that this was coincidence, or that she was aware of standard observation protocols and made an educated guess. I find neither explanation satisfying. I am recommending a full review of the Neutralized Variant's cognitohazardous properties and a reassessment of whether the eleven-minute exposure limit remains adequate.
 
@@ -140,15 +146,21 @@ After eighteen months of analysis of the Neutralized Variant, the Xenolinguistic
 
 **Addendum 7741-D: Incident Report — Unauthorized Raw Signal Access**
 
-*Date: ██/██/2017*
-*[DOCUMENT ACCESS RESTRICTED — LEVEL 4 AND ABOVE]*
+_Date: ██/██/2017_
+_[DOCUMENT ACCESS RESTRICTED — LEVEL 4 AND ABOVE]_
 
 On ██/██/2017, Dr. ████████ ████, then-Director of Site-77 and a senior member of the DAA, accessed the air-gapped server containing the raw SCP-7741 signal archive. Access logs indicate that Dr. ████ played a raw recording lasting approximately **twenty-two (22) minutes** before the automated monitoring system flagged the access and dispatched a security team.
 
-Dr. ████ was found seated at the terminal in a state of apparent calm. He did not resist when security personnel escorted him from the room. His first words upon exiting were reported as: *"We should answer it."*
+Dr. ████ was found seated at the terminal in a state of apparent calm. He did not resist when security personnel escorted him from the room. His first words upon exiting were reported as: _"We should answer it."_
 
 Dr. ████ underwent full psychological evaluation over the following week. He was cooperative, articulate, and showed no signs of the vegetative state observed in earlier long-exposure cases. However, evaluating psychologists noted several anomalous findings:
 
 - Dr. ████ demonstrated an inability to discuss the content of what he heard, not due to apparent reluctance but because, as he described it, "the words for it don't exist."
 - He repeatedly expressed a compulsion to transmit a signal in response to SCP-7741, though he could not articulate what that signal should contain or why.
-- On the fourth day of evaluation, he produced, unprompted, 47 pages of mathematical notation. Foundation analysts have been unable to fully assess the content, but preliminary review suggests it may represent a partial transcription of the signal's
+- On the fourth day of evaluation, he produced, unprompted, 47 pages of mathematical notation. Foundation analysts have been unable to fully assess the content, but preliminary review suggests it may represent a partial transcription of the signal's underlying structure or encoding schema, mapping recognizable human mathematical constructs onto an unknown symbolic framework.
+
+Following this incident, Dr. ████ was removed from his position as Site Director and placed under indefinite observation at Site-77's high-security medical wing. All proposals to "answer" SCP-7741 have been formally deferred by order of the O5 Council pending further analysis of the cognitohazard involved.
+
+As of this writing, no further unauthorized access to the raw SCP-7741 archive has been recorded. Research into safely decoding the notation produced by Dr. ████ is ongoing under the joint oversight of the Department of Astronomical Anomalies and the Memetics and Infohazards Division.
+
+_End of Document 7741-D._
