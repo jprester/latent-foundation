@@ -1,24 +1,23 @@
 #!/usr/bin/env node
 
-// Load environment variables from .env file
-require("dotenv").config();
+import "dotenv/config";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const fs = require("fs");
-const path = require("path");
-const { execSync } = require("child_process");
-const { config } = require("dotenv");
+const __filename = fileURLToPath(import.meta.url);
 
 const anthropicModels = {
-  claude4_sonnet: "claude-sonnet-4-20250514",
-  claude4_opus: "claude-opus-4-20250514",
-  claude3_7_sonnet: "claude-3-7-sonnet-latest",
+  claude_4_5_haiku: "claude-haiku-4-5-20251001",
+  claude_4_6_sonnet: "claude-sonnet-4-6",
+  claude_4_6_opus: "claude-opus-4-6",
 };
 
 // Configuration
 const CONFIG = {
   apiUrl: "https://api.anthropic.com/v1/messages",
   storiesDir: path.join(process.cwd(), "stories"),
-  model: anthropicModels.claude4_sonnet,
+  model: anthropicModels.claude_4_6_sonnet,
   temperature: 0.7,
   promptTemplates: {
     safe: "Create a Safe-class SCP entry about {theme}. Focus on minimal containment requirements and low risk to personnel. The anomaly should be well-understood and predictable.",
@@ -89,7 +88,7 @@ async function callClaudeAPI(prompt) {
     console.log("💡 Add to .env file: ANTHROPIC_API_KEY=your-key-here");
     console.log('💡 Or set with: export ANTHROPIC_API_KEY="your-key-here"');
     console.log(
-      "💡 Make sure .env file is in your project root and install dotenv: npm install dotenv"
+      "💡 Make sure .env file is in your project root and install dotenv: npm install dotenv",
     );
     process.exit(1);
   }
@@ -97,8 +96,8 @@ async function callClaudeAPI(prompt) {
   console.log("🤖 Generating story with Claude...");
   console.log(
     `🔑 Using API key: ${apiKey.substring(0, 8)}...${apiKey.substring(
-      apiKey.length - 4
-    )}`
+      apiKey.length - 4,
+    )}`,
   );
 
   try {
@@ -169,7 +168,7 @@ function createMarkdownFile(
   content,
   scpClass,
   theme,
-  additionalParams
+  additionalParams,
 ) {
   const tags = generateTags(theme, scpClass, additionalParams);
   const today = new Date().toISOString().split("T")[0];
@@ -222,7 +221,7 @@ function showHelp() {
 🏛️  THE LATENT FOUNDATION - Story Generator
 
 USAGE:
-  node scripts/generate-story.js --theme "THEME" --class "CLASS" [OPTIONS]
+  node scripts/generate-story.mjs --theme "THEME" --class "CLASS" [OPTIONS]
 
 REQUIRED:
   --theme     Story theme/concept (e.g., "haunted mirror", "time-dilating coffee shop")
@@ -238,10 +237,10 @@ OPTIONAL:
 
 EXAMPLES:
   # Basic story
-  node scripts/generate-story.js --theme "reality-bending mirror" --class "Euclid"
+  node scripts/generate-story.mjs --theme "reality-bending mirror" --class "Euclid"
   
   # Detailed story with custom elements
-  node scripts/generate-story.js \\
+  node scripts/generate-story.mjs \
     --theme "sentient AI that writes poetry" \\
     --class "Safe" \\
     --tags "artificial-intelligence,writing,benevolent" \\
@@ -249,7 +248,7 @@ EXAMPLES:
     --researcher "Stevens"
 
   # Story with images
-  node scripts/generate-story.js \\
+  node scripts/generate-story.mjs \
     --theme "interdimensional doorway" \\
     --class "Keter" \\
     --thumbnail "door-thumbnail.jpg" \\
@@ -282,7 +281,7 @@ async function main() {
 
   if (!validClasses.includes(scpClass)) {
     console.error(
-      `❌ Invalid class "${params.class}". Must be: Safe, Euclid, or Keter`
+      `❌ Invalid class "${params.class}". Must be: Safe, Euclid, or Keter`,
     );
     process.exit(1);
   }
@@ -309,7 +308,7 @@ async function main() {
       story,
       scpClass,
       params.theme,
-      params
+      params,
     );
 
     console.log("✅ Story generated successfully!");
@@ -317,7 +316,7 @@ async function main() {
     console.log(`📁 Path: ${filepath}`);
     console.log("");
     console.log(
-      "🚀 Your new SCP story is ready! Add it to your website and start generating more anomalies!"
+      "🚀 Your new SCP story is ready! Add it to your website and start generating more anomalies!",
     );
   } catch (error) {
     console.error("❌ Failed to generate story:", error.message);
@@ -325,13 +324,8 @@ async function main() {
   }
 }
 
-// Handle fetch for Node.js environments that don't have it
-if (typeof fetch === "undefined") {
-  global.fetch = require("node-fetch");
-}
-
-if (require.main === module) {
+if (process.argv[1] === __filename) {
   main();
 }
 
-module.exports = { generatePrompt, getNextScpNumber, generateTags };
+export { generatePrompt, getNextScpNumber, generateTags };

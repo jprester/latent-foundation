@@ -16,6 +16,13 @@ To install the Latent Foundation:
 2. `npm install`
 3. `npm run dev`
 
+### Story Generation using CLI
+
+```bash
+# Generate new story with specific parameters
+npm run generate -- --theme "haunted mirror" --class "Euclid" --tags "time-manipulation,memetic"
+```
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

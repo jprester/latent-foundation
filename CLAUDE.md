@@ -17,6 +17,7 @@ npm run generate     # Generate new AI stories (requires ANTHROPIC_API_KEY)
 ```
 
 ### Story Generation
+
 ```bash
 # Generate new story with specific parameters
 npm run generate -- --theme "haunted mirror" --class "Euclid" --tags "time-manipulation,memetic"
@@ -25,24 +26,28 @@ npm run generate -- --theme "haunted mirror" --class "Euclid" --tags "time-manip
 ## Architecture
 
 ### Content System
+
 - Stories stored as Markdown files in `/stories/` directory with YAML frontmatter
 - Automatic numbering: SCPG-001, SCPG-002, etc.
 - Images organized in `/public/images/[story-id]/` structure
 - Each story requires: title, class (Safe/Euclid/Keter), tags, date, content
 
 ### App Router Structure
+
 - `/app/page.tsx` - Homepage with stories grid and filtering
 - `/app/story/[slug]/page.tsx` - Individual story pages
 - `/app/api/stories/` - API routes for story data and individual story fetching
 - `/app/layout.tsx` - Root layout with metadata and dark mode support
 
 ### Key Components
+
 - `StoryCard` - Grid item displaying story preview with classification styling
 - `StoryContent` - Markdown rendering with image gallery support
 - `FilterControls` - Class filtering, search, and tag-based filtering
 - `DarkModeToggle` - Theme switching with persistent storage
 
 ### Data Flow
+
 1. Stories parsed server-side via gray-matter in API routes
 2. Homepage fetches all stories via `/api/stories`
 3. Individual pages fetch specific stories via `/api/stories/[slug]`
@@ -51,8 +56,9 @@ npm run generate -- --theme "haunted mirror" --class "Euclid" --tags "time-manip
 ## SCP Classification System
 
 Stories use SCP-style classifications with color coding:
+
 - **Safe** (green): Easily contained, predictable
-- **Euclid** (orange): Unpredictable behavior, requires careful handling  
+- **Euclid** (orange): Unpredictable behavior, requires careful handling
 - **Keter** (red): Extremely dangerous, difficult to contain
 
 ## Styling Architecture
@@ -66,6 +72,7 @@ Stories use SCP-style classifications with color coding:
 ## TypeScript Interfaces
 
 Key types defined in `/types/`:
+
 - `Story` - Complete story object with metadata and content
 - `StoryMetadata` - Frontmatter-only version for listings
 - `FilterState` - Client-side filtering state management
@@ -86,7 +93,8 @@ Key types defined in `/types/`:
 
 ## AI Integration
 
-The `/scripts/generate-story.js` script integrates with Claude API for content generation:
+The `/scripts/generate-story.mjs` script integrates with Claude API for content generation:
+
 - Requires `ANTHROPIC_API_KEY` environment variable
 - Configurable prompts based on SCP class
 - Automatic frontmatter and file generation
