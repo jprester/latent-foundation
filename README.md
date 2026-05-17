@@ -20,7 +20,7 @@ Latent Foundation is a project focused on creating and sharing SCP-style stories
 | `FAL_KEY`             | For thumbnail generation | API key from [fal.ai/dashboard/keys](https://fal.ai/dashboard/keys)                                               |
 | `OPENROUTER_SITE_URL` | No                       | Optional site URL for OpenRouter referrer header                                                                  |
 | `ANTHROPIC_MODEL`     | No                       | Default model id or alias when `--provider anthropic` is used. Defaults to `claude-sonnet-4-6`.                   |
-| `OPENROUTER_MODEL`    | No                       | Default model id or alias when OpenRouter is used. Defaults to `moonshotai/kimi-latest`.                          |
+| `OPENROUTER_MODEL`    | No                       | Default model id or alias when OpenRouter is used. Defaults to `moonshotai/kimi-k2.6`.                            |
 
 ## Development
 
@@ -67,7 +67,7 @@ npm run generate -- --theme "ancient simulated reality machine" --class "Euclid"
 
 #### Supported Providers
 
-- **OpenRouter** (default): Defaults to Kimi K2 (`moonshotai/kimi-latest`). Any other OpenRouter model can be passed via `--model`. Free-tier models (e.g. `deepseek/deepseek-v4-flash:free`) are accepted but output quality varies significantly by which provider OpenRouter routes you to.
+- **OpenRouter** (default): Defaults to Kimi K2.6 (`moonshotai/kimi-k2.6`). Any other OpenRouter model can be passed via `--model`.
 - **Anthropic**: Direct Claude API access. Defaults to Sonnet 4.6.
 
 #### Choosing a model
@@ -76,9 +76,11 @@ Three ways to pick a model, in priority order:
 
 1. **`--model` flag** — overrides everything: `--model claude-opus-4-7` or `--model "google/gemini-2.0-flash-exp"`
 2. **Env var** in `.env` — `ANTHROPIC_MODEL` or `OPENROUTER_MODEL`. Useful when you always want the same model for a given provider.
-3. **Built-in default** — Sonnet 4.6 for Anthropic, Kimi K2 latest for OpenRouter.
+3. **Built-in default** — Sonnet 4.6 for Anthropic, Kimi K2.6 for OpenRouter.
 
-Short aliases are also accepted (e.g. `--model kimi_latest`, `--model claude_4_6_opus`). Run `node scripts/generate-story.mjs --help` for the full alias list.
+Short aliases are also accepted (e.g. `--model kimi_2_6`, `--model claude_4_6_opus`). Run `node scripts/generate-story.mjs --help` for the full alias list.
+
+**Reasoning is disabled on OpenRouter by default.** The script sends `reasoning: { enabled: false }` in the request body, which tells reasoning-capable models (Kimi K2.6, DeepSeek R1, etc.) to skip the hidden "thinking" step and just answer. Without this flag, those models burn through `max_tokens` on hidden reasoning and never emit the actual story. If you want a model to reason and have the budget for it, bump `--max-tokens` to `32000`+ and flip the `reasoning.enabled` flag in `scripts/generate-story.mjs:34`.
 
 ### Method 2: Claude Code (`/scpg`)
 

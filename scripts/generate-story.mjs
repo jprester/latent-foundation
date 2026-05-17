@@ -15,10 +15,8 @@ const anthropicModels = {
 };
 
 const openRouterModels = {
-  deepseek_v4_flash_free: "deepseek/deepseek-v4-flash:free",
+  deepseek_v4_flash_free: "deepseek/deepseek-v4-flash",
   kimi_2_6: "moonshotai/kimi-k2.6",
-  kimi_latest: "~moonshotai/kimi-latest",
-  kimi_2_instruct: "moonshotai/kimi-k2-instruct",
 };
 
 // Configuration
@@ -33,6 +31,7 @@ const CONFIG = {
     openrouter: {
       apiUrl: "https://openrouter.ai/api/v1/chat/completions",
       defaultModel: openRouterModels.kimi_2_6,
+      reasoning: { enabled: false },
     },
   },
   fal: {
@@ -257,6 +256,9 @@ async function callOpenRouterAPI(prompt, model, maxTokens) {
         temperature: CONFIG.temperature,
         max_tokens: maxTokens,
         messages: [{ role: "user", content: prompt }],
+        reasoning: {
+          enabled: CONFIG.providers.openrouter.reasoning.enabled,
+        },
       }),
     });
 
@@ -623,16 +625,19 @@ STORY OPTIONS:
 
 MODEL ALIASES (pass to --model or set as env var):
   Anthropic:
-    claude_4_5_haiku     -> claude-haiku-4-5-20251001
-    claude_4_6_sonnet    -> claude-sonnet-4-6   (default)
-    claude_4_6_opus      -> claude-opus-4-6
+    claude_4_5_haiku       -> claude-haiku-4-5-20251001
+    claude_4_6_sonnet      -> claude-sonnet-4-6        (default)
+    claude_4_6_opus        -> claude-opus-4-6
   OpenRouter:
-    kimi_latest            -> moonshotai/kimi-latest             (default)
-    kimi_2_5               -> moonshotai/kimi-k2
-    kimi_2_5_instruct      -> moonshotai/kimi-k2-instruct
-    deepseek_v4_flash_free -> deepseek/deepseek-v4-flash:free    (free tier, quality varies by provider)
+    kimi_2_6               -> moonshotai/kimi-k2.6     (default)
+    deepseek_v4_flash_free -> deepseek/deepseek-v4-flash
 
   You can also pass any raw model id (e.g. --model "google/gemini-2.0-flash-exp").
+
+  Note: reasoning is disabled by default for OpenRouter requests (via
+  \`reasoning: { enabled: false }\` in the request body). This lets reasoning-
+  capable models like Kimi K2.6 produce a normal answer inside the default
+  --max-tokens budget instead of spending all tokens on hidden thinking.
 
 GENERATE THUMBNAILS (backfill missing images):
   --generate-thumbnails   Generate thumbnails for existing stories missing them
