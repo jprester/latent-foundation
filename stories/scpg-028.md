@@ -5,7 +5,7 @@ tags: ["unpredictable", "moderate-risk", "supenatural", "serial"]
 date: "2025-06-30"
 ---
 
-# The Mimic's Hunt
+# SCPG-028: The Mimic's Hunt
 
 **Item #:** SCPG-028
 

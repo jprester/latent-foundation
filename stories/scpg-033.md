@@ -5,7 +5,7 @@ tags: ["dangerous", "high-risk", "breach-risk", "new", "physics"]
 date: "2026-03-12"
 ---
 
-**The Gödel-March Hypothesis**
+# SCPG-033: The Gödel-March Hypothesis
 
 **Item #:** SCPG-033
 

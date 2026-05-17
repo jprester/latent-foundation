@@ -79,18 +79,22 @@ function generatePrompt(theme, scpClass, additionalParams = {}) {
   const basePrompt = CONFIG.promptTemplates[scpClass.toLowerCase()];
   const prompt = basePrompt.replace("{theme}", theme);
   const minWords = additionalParams.minWords ?? CONFIG.defaultMinWords;
+  const scpgId = additionalParams.scpgId ?? "SCPG-NNN";
 
   const fullPrompt = `${prompt}
 
 REQUIREMENTS:
 - Write in authentic SCP Foundation style
+- This entry's identifier is **${scpgId}**. Use it as the H1 heading (e.g. \`# ${scpgId}: Title\`) and in every in-body reference (Item #, containment text, addendum numbers). Do NOT use \`SCP-XXXX\` or invent a different SCP number like \`SCP-7441\`.
+- The H1 must be a real markdown heading (\`#\`), not bold text. Format: \`# ${scpgId}: Title\` (no quotes around the title).
+- Use \`## Section\` headings for major sections (Special Containment Procedures, Description, each Addendum). Do NOT insert \`---\` horizontal rules between sections — the headings provide the visual break, and the rules render as visible borders.
 - Include proper formatting with Object Class, Special Containment Procedures, and Description sections
 - Add at least one Addendum with incident logs or research notes
 - Keep it engaging but scientific in tone
 - Length should be at least ${minWords} words
 - Include realistic containment protocols
 - Use the SCP Foundation wiki style guide as reference: https://scpwiki.com/scp-foundation-style-guide
-- give story a name that fits the theme
+- Give the story a name that fits the theme
 ${
   additionalParams.tags
     ? `- Incorporate these themes/tags: ${additionalParams.tags.join(", ")}`
@@ -443,6 +447,28 @@ function generateTags(theme, scpClass, additionalParams) {
   return [...new Set(baseTags)].slice(0, 6);
 }
 
+function extractStoryTitle(content) {
+  // Matches headings like:
+  //   # SCP-XXXX: "Title"
+  //   ## SCP-7441: "Title"
+  //   **SCP-4957 - "Title"**
+  //   SCP-XXXX — "Title"
+  // and also bare-quoted titles on the first heading line.
+  const patterns = [
+    /^#+\s*SCP-[\dXxA-Z]+\s*[:\-–—]\s*["“'']([^"”'']+)["”'']/m,
+    /\*\*\s*SCP-[\dXxA-Z]+\s*[:\-–—]\s*["“'']([^"”'']+)["”'']\s*\*\*/m,
+    /^#+\s*["“'']([^"”'']+)["”'']/m,
+  ];
+
+  for (const pattern of patterns) {
+    const match = content.match(pattern);
+    if (match) {
+      return match[1].trim();
+    }
+  }
+  return null;
+}
+
 function createMarkdownFile(
   scpNumber,
   content,
@@ -456,9 +482,15 @@ function createMarkdownFile(
   // Use "thumbnail.jpg" when we generated one, otherwise use whatever was passed manually
   const thumbnailValue = additionalParams.thumbnail ?? null;
 
+  const paddedNumber = scpNumber.toString().padStart(3, "0");
+  const storyTitle = extractStoryTitle(content);
+  const titleField = storyTitle
+    ? `SCPG-${paddedNumber}: ${storyTitle}`
+    : `SCPG-${paddedNumber}`;
+
   const lines = [
     "---",
-    `title: "SCPG-${scpNumber.toString().padStart(3, "0")}"`,
+    `title: "${titleField.replace(/"/g, '\\"')}"`,
     `class: "${scpClass}"`,
     `tags: ${JSON.stringify(tags)}`,
     `date: "${today}"`,
@@ -833,9 +865,11 @@ async function main() {
   try {
     // 1. Generate the story
     console.log("🤖 Generating story...");
+    const scpgId = `SCPG-${scpNumber.toString().padStart(3, "0")}`;
     const prompt = generatePrompt(params.theme, scpClass, {
       ...params,
       minWords,
+      scpgId,
     });
     const story = await callModelAPI(prompt, provider, model, maxTokens);
     console.log("✅ Story generated\n");

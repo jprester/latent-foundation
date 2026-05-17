@@ -6,7 +6,7 @@ tags:
 date: "2025-11-28"
 ---
 
-# SCPG-031: "The Broadcast Without Witness"
+# SCPG-031: The Broadcast Without Witness
 
 **Item #:** SCPG-031
 

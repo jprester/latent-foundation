@@ -18,12 +18,12 @@ Match the established register. Don't copy structure mechanically.
 
 ## Required sections
 
+The orchestrator will tell you the SCPG number (e.g., `SCPG-038`). Use that number consistently throughout the body — never `SCP-XXXX`, never a made-up SCP number like `SCP-7441`.
+
 ```markdown
-# SCP-XXXX: "Title from premise spec"
+# SCPG-NNN: Title From Premise Spec
 
----
-
-**Item #:** SCP-XXXX
+**Item #:** SCPG-NNN
 
 **Object Class:** <class from premise>
 
@@ -31,32 +31,28 @@ Match the established register. Don't copy structure mechanically.
 
 **Threat Level:** ████ (Color)  [optional, but adds texture]
 
----
-
 ## Special Containment Procedures
 
 [Detailed, specific protocols. Multiple subsections (Physical Containment, Personnel Protocols, Amnestic Protocols, etc.) for Euclid/Keter. Real engineering language — bulkhead ratings, frequencies, distances, named protocols ("Protocol LOCKSTEP"). The procedures should imply the anomaly's mechanism without explaining it yet.]
-
----
 
 ## Description
 
 [The anomaly itself. Start with physical/observable facts. Build into the mechanism. End with the *implication* — what this thing actually does to the people who encounter it. This is where the dread lives. ~600–1000 words minimum.]
 
----
-
-## Addendum XXXX-1: Discovery and Initial Containment
+## Addendum NNN-1: Discovery and Initial Containment
 
 [How the Foundation found it. Date, location, triggering incident. Specific named civilians whose lives intersected with the anomaly. End with the first research interaction.]
 
-## Addendum XXXX-2: [Research log or incident report]
+## Addendum NNN-2: [Research log or incident report]
 
 [First-person voice. Researcher writing in their own register — not Foundation-clinical. This is where the story breathes. Use italics for transcribed audio. Let the researcher be a person, not a function.]
 
-## Addendum XXXX-N: [More — at least 4 total addenda, ideally 5-7]
+## Addendum NNN-N: [More — at least 4 total addenda, ideally 5-7]
 
 [Mix: more research logs, incident reports, linguistic/forensic analysis, escalation events that explain class reclassification, personal notes from the primary researcher, status reports.]
 ```
+
+**Do not** insert standalone `---` horizontal rules between sections. The `##` headings provide the visual break; the rules render as visible borders on the site and look broken.
 
 End with one of:
 - A short quoted line (graffiti, marginalia, transmission fragment) that recontextualizes the entry
@@ -64,7 +60,7 @@ End with one of:
 
 Then close with a classification footer:
 ```
-**Document Classification:** Level N/XXXX
+**Document Classification:** Level N/NNN
 **Unauthorized access...**
 ```
 
@@ -75,7 +71,7 @@ Then close with a classification footer:
 - **The horror is implied, not described.** Don't tell the reader to feel afraid. Show the protocol that exists because something terrible happened, then let the reader fill in the something.
 - **Specificity over scale.** "Thirty-seven (37) individuals" is scarier than "many people". Frequencies in Hz, distances in meters, exact durations. The numbers do the work.
 - **Use SCP conventions naturally**: `[REDACTED]`, `████`, `██/██/YYYY`, parenthesized digit clarifications like "four (4) persons", named protocols in ALL CAPS or Title Case.
-- **The SCP identifier in the body is always `SCP-XXXX`** (literal X's). The site renders the real number from the filename.
+- **The identifier in the body is always `SCPG-NNN`** — the real number the orchestrator passes in. Never `SCP-XXXX`, never a made-up `SCP-7441`-style number. The Latent Foundation uses SCPG, not SCP.
 
 ## Length
 
@@ -90,4 +86,4 @@ Target 3500–5000 words. The model tends to undershoot — aim high. If you're 
 
 ## Output
 
-Return only the markdown body, starting with `# SCP-XXXX: "..."`. No preamble, no closing summary, no explanation of choices.
+Return only the markdown body, starting with `# SCPG-NNN: Title`. No preamble, no closing summary, no explanation of choices.
