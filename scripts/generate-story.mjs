@@ -16,6 +16,7 @@ const anthropicModels = {
 
 const openRouterModels = {
   kimi_2_5: "moonshotai/kimi-k2",
+  kimi_latest: "moonshotai/kimi-latest",
   kimi_2_5_instruct: "moonshotai/kimi-k2-instruct",
 };
 
@@ -30,7 +31,7 @@ const CONFIG = {
     },
     openrouter: {
       apiUrl: "https://openrouter.ai/api/v1/chat/completions",
-      defaultModel: openRouterModels.kimi_2_5,
+      defaultModel: openRouterModels.kimi_latest,
     },
   },
   fal: {
@@ -43,6 +44,8 @@ const CONFIG = {
     timeoutMs: 120000,
   },
   temperature: 0.7,
+  defaultMaxTokens: 4000,
+  defaultMinWords: 2000,
   promptTemplates: {
     safe: "Create a Safe-class SCP entry about {theme}. Focus on minimal containment requirements and low risk to personnel. The anomaly should be well-understood and predictable.",
     euclid:
@@ -75,6 +78,7 @@ function getNextScpNumber() {
 function generatePrompt(theme, scpClass, additionalParams = {}) {
   const basePrompt = CONFIG.promptTemplates[scpClass.toLowerCase()];
   const prompt = basePrompt.replace("{theme}", theme);
+  const minWords = additionalParams.minWords ?? CONFIG.defaultMinWords;
 
   const fullPrompt = `${prompt}
 
@@ -83,7 +87,7 @@ REQUIREMENTS:
 - Include proper formatting with Object Class, Special Containment Procedures, and Description sections
 - Add at least one Addendum with incident logs or research notes
 - Keep it engaging but scientific in tone
-- Length should be at least 2000 words
+- Length should be at least ${minWords} words
 - Include realistic containment protocols
 - Use the SCP Foundation wiki style guide as reference: https://scpwiki.com/scp-foundation-style-guide
 - give story a name that fits the theme
@@ -115,30 +119,34 @@ function generateImagePrompt(theme, scpClass, storyContent) {
 
   // Extract the Description and Addendum sections (skip Containment Procedures)
   const descAndAddenda = storyContent
-    .replace(/^[\s\S]*?\*\*Description[:\s]*\*\*/i, "")  // drop everything before Description
-    .replace(/\*\*Special Containment Procedures[:\s]*\*\*[\s\S]*?\*\*Description/i, ""); // safety fallback
+    .replace(/^[\s\S]*?\*\*Description[:\s]*\*\*/i, "") // drop everything before Description
+    .replace(
+      /\*\*Special Containment Procedures[:\s]*\*\*[\s\S]*?\*\*Description/i,
+      "",
+    ); // safety fallback
 
   // Clean the extracted text
   const cleaned = descAndAddenda
     .replace(/\[REDACTED\]/gi, "")
     .replace(/█+\/?█*/g, "")
-    .replace(/\*\*[^*]+\*\*/g, "")  // remove bold markers and their content (section headers)
-    .replace(/#+ .+/g, "")           // remove markdown headers
+    .replace(/\*\*[^*]+\*\*/g, "") // remove bold markers and their content (section headers)
+    .replace(/#+ .+/g, "") // remove markdown headers
     .replace(/Item #:.+/g, "")
     .replace(/Object Class:.+/g, "")
     .replace(/SCP-\d+[A-Z]?(-[A-Z]+)?/g, "the entity")
     .replace(/SCPG-\d+[A-Z]?(-[A-Z]+)?/g, "the entity")
     .replace(/\(see [^)]+\)/gi, "")
     .replace(/\(designated [^)]+\)/gi, "")
-    .replace(/\d{1,2}\.\s/g, " ")     // remove numbered list prefixes
-    .replace(/\bon \/?[\d\/]*\b/g, "")  // remove partial dates like "on /2009"
+    .replace(/\d{1,2}\.\s/g, " ") // remove numbered list prefixes
+    .replace(/\bon \/?[\d\/]*\b/g, "") // remove partial dates like "on /2009"
     .replace(/located in\s*,/g, "located in an undisclosed location,")
-    .replace(/\bthe entity\b/gi, "it")  // less repetitive than "the entity"
-    .replace(/\bit is\b/g, "the anomaly is")  // restore clarity for first occurrence
+    .replace(/\bthe entity\b/gi, "it") // less repetitive than "the entity"
+    .replace(/\bit is\b/g, "the anomaly is") // restore clarity for first occurrence
     .replace(/\s+/g, " ");
 
   // Extract sentences that contain visual/physical descriptors
-  const visualKeywords = /\b(appear|look|resemble|shaped|glow|emit|float|dark|light|color|black|white|red|shadow|surface|liquid|glass|metal|stone|flesh|eye|face|hand|body|figure|silhouette|door|mirror|wall|room|chamber|corridor|sky|fog|mist|smoke|fire|water|blood|rust|crack|fracture|crystal|orb|sphere|tower|building|machine|screen|static|signal|broadcast|frequency|telescope|collider|crater|geometry|architecture|impossible|non-euclidean|fractal|recursive|infinite|spiral|void|abyss|rift|portal|gateway|photograph|painting|statue|artifact|relic|ancient|decay|ruin|distort|warp|shimmer|pulse|hum|vibrat|flicker|swirl|tentacle|wing|claw|tooth|horn|mask|robe|armor)\b/i;
+  const visualKeywords =
+    /\b(appear|look|resemble|shaped|glow|emit|float|dark|light|color|black|white|red|shadow|surface|liquid|glass|metal|stone|flesh|eye|face|hand|body|figure|silhouette|door|mirror|wall|room|chamber|corridor|sky|fog|mist|smoke|fire|water|blood|rust|crack|fracture|crystal|orb|sphere|tower|building|machine|screen|static|signal|broadcast|frequency|telescope|collider|crater|geometry|architecture|impossible|non-euclidean|fractal|recursive|infinite|spiral|void|abyss|rift|portal|gateway|photograph|painting|statue|artifact|relic|ancient|decay|ruin|distort|warp|shimmer|pulse|hum|vibrat|flicker|swirl|tentacle|wing|claw|tooth|horn|mask|robe|armor)\b/i;
 
   const sentences = cleaned
     .replace(/\n+/g, " ")
@@ -151,24 +159,26 @@ function generateImagePrompt(theme, scpClass, storyContent) {
   const visualDetails = sentences.slice(0, 3).join(" ").trim();
 
   // Build the subject: title + visual details from the story
-  const subject = visualDetails
-    ? `${title}. ${visualDetails}`
-    : title;
+  const subject = visualDetails ? `${title}. ${visualDetails}` : title;
 
   const classAtmosphere = {
     safe: "clinical sterile laboratory, fluorescent lighting, muted tones, subtle wrongness",
     euclid: "dim abandoned facility, fog, uncertain shadows, eerie twilight",
-    keter: "dark ominous containment breach, danger, harsh contrast, red warning lights",
-    apollyon: "apocalyptic devastation, cosmic horror, overwhelming scale, end of world",
+    keter:
+      "dark ominous containment breach, danger, harsh contrast, red warning lights",
+    apollyon:
+      "apocalyptic devastation, cosmic horror, overwhelming scale, end of world",
   };
 
-  const atmosphere = classAtmosphere[scpClass.toLowerCase()] ?? "mysterious and unsettling";
+  const atmosphere =
+    classAtmosphere[scpClass.toLowerCase()] ?? "mysterious and unsettling";
 
   // Truncate subject to ~400 chars for best Flux results
   const maxSubjectLen = 400;
-  const truncatedSubject = subject.length > maxSubjectLen
-    ? subject.slice(0, maxSubjectLen).replace(/\s\S*$/, "...")
-    : subject;
+  const truncatedSubject =
+    subject.length > maxSubjectLen
+      ? subject.slice(0, maxSubjectLen).replace(/\s\S*$/, "...")
+      : subject;
 
   return `${truncatedSubject}, ${atmosphere}, cinematic still frame, desaturated muted color palette, dark vignette, photorealistic, no text, no words, no logos, no UI`;
 }
@@ -177,7 +187,7 @@ function generateImagePrompt(theme, scpClass, storyContent) {
 // Story API calls
 // ---------------------------------------------------------------------------
 
-async function callAnthropicAPI(prompt, model) {
+async function callAnthropicAPI(prompt, model, maxTokens) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
 
   if (!apiKey) {
@@ -197,7 +207,7 @@ async function callAnthropicAPI(prompt, model) {
       },
       body: JSON.stringify({
         model,
-        max_tokens: 4000,
+        max_tokens: maxTokens,
         temperature: CONFIG.temperature,
         messages: [{ role: "user", content: prompt }],
       }),
@@ -216,7 +226,7 @@ async function callAnthropicAPI(prompt, model) {
   }
 }
 
-async function callOpenRouterAPI(prompt, model) {
+async function callOpenRouterAPI(prompt, model, maxTokens) {
   const apiKey = process.env.OPENROUTER_API_KEY;
 
   if (!apiKey) {
@@ -240,7 +250,7 @@ async function callOpenRouterAPI(prompt, model) {
       body: JSON.stringify({
         model,
         temperature: CONFIG.temperature,
-        max_tokens: 4000,
+        max_tokens: maxTokens,
         messages: [{ role: "user", content: prompt }],
       }),
     });
@@ -264,12 +274,12 @@ async function callOpenRouterAPI(prompt, model) {
   }
 }
 
-async function callModelAPI(prompt, provider, model) {
+async function callModelAPI(prompt, provider, model, maxTokens) {
   if (provider === "anthropic") {
-    return callAnthropicAPI(prompt, model);
+    return callAnthropicAPI(prompt, model, maxTokens);
   }
 
-  return callOpenRouterAPI(prompt, model);
+  return callOpenRouterAPI(prompt, model, maxTokens);
 }
 
 // ---------------------------------------------------------------------------
@@ -310,7 +320,7 @@ async function generateThumbnailWithFal(imagePrompt, outputPath) {
           num_images: 1,
           enable_safety_checker: true,
         }),
-      }
+      },
     );
 
     if (!submitResponse.ok) {
@@ -355,14 +365,20 @@ async function generateThumbnailWithFal(imagePrompt, outputPath) {
 
         if (!resultResponse.ok) {
           const errorText = await resultResponse.text();
-          console.error(`\n❌ Fal.ai result fetch error (${resultResponse.status}):`, errorText);
+          console.error(
+            `\n❌ Fal.ai result fetch error (${resultResponse.status}):`,
+            errorText,
+          );
           return false;
         }
 
         const result = await resultResponse.json();
         const imageUrl = result.images?.[0]?.url;
         if (!imageUrl) {
-          console.error("❌ No image URL in Fal.ai response:", JSON.stringify(result).slice(0, 300));
+          console.error(
+            "❌ No image URL in Fal.ai response:",
+            JSON.stringify(result).slice(0, 300),
+          );
           return false;
         }
 
@@ -432,7 +448,7 @@ function createMarkdownFile(
   content,
   scpClass,
   theme,
-  additionalParams
+  additionalParams,
 ) {
   const tags = generateTags(theme, scpClass, additionalParams);
   const today = new Date().toISOString().split("T")[0];
@@ -475,7 +491,7 @@ function resolveProvider(providerRaw) {
 
   if (!Object.hasOwn(CONFIG.providers, provider)) {
     console.error(
-      `❌ Invalid provider "${providerRaw}". Must be: anthropic or openrouter`
+      `❌ Invalid provider "${providerRaw}". Must be: anthropic or openrouter`,
     );
     process.exit(1);
   }
@@ -502,7 +518,12 @@ function resolveModel(provider, modelRaw) {
 function parseArgs() {
   const args = process.argv.slice(2);
   const params = {};
-  const booleanFlags = new Set(["no-image", "help", "generate-thumbnails", "force"]);
+  const booleanFlags = new Set([
+    "no-image",
+    "help",
+    "generate-thumbnails",
+    "force",
+  ]);
 
   for (let i = 0; i < args.length; i++) {
     const key = args[i].replace(/^--/, "");
@@ -546,6 +567,8 @@ STORY OPTIONS:
   --number      Specific SCP number (auto-generated if not provided)
   --provider    Model provider: openrouter (default) or anthropic
   --model       Model id or alias for selected provider
+  --max-tokens  Max output tokens (default: 4000, e.g. 16000 for longer stories)
+  --min-words   Target minimum word count in the prompt (default: 2000)
   --fal-model   Fal.ai model: "fal-ai/flux/dev" (default) or "fal-ai/flux-pro"
 
 GENERATE THUMBNAILS (backfill missing images):
@@ -571,6 +594,13 @@ EXAMPLES:
     --theme "interdimensional doorway" \\
     --class "Keter" \\
     --no-image
+
+  # Longer story (~5000 words)
+  node scripts/generate-story.mjs \\
+    --theme "ancient simulated reality machine" \\
+    --class "Euclid" \\
+    --min-words 5000 \\
+    --max-tokens 16000
 
   # Generate missing thumbnails for all stories
   node scripts/generate-story.mjs --generate-thumbnails
@@ -658,7 +688,9 @@ async function generateThumbnailsForExisting(params) {
 
     const thumbnailPath = path.join(imagesRoot, storyId, "thumbnail.jpg");
     if (fs.existsSync(thumbnailPath) && !params.force) {
-      console.log(`✅ ${storyId} already has a thumbnail. Use --force to regenerate.`);
+      console.log(
+        `✅ ${storyId} already has a thumbnail. Use --force to regenerate.`,
+      );
       return;
     }
 
@@ -714,7 +746,9 @@ async function generateThumbnailsForExisting(params) {
   }
 
   console.log(`\n${"─".repeat(50)}`);
-  console.log(`✅ Generated: ${succeeded}  ❌ Failed: ${failed}  Total: ${targets.length}`);
+  console.log(
+    `✅ Generated: ${succeeded}  ❌ Failed: ${failed}  Total: ${targets.length}`,
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -744,7 +778,7 @@ async function main() {
 
   if (!validClasses.includes(scpClass)) {
     console.error(
-      `❌ Invalid class "${params.class}". Must be: Safe, Euclid, Keter, or Apollyon`
+      `❌ Invalid class "${params.class}". Must be: Safe, Euclid, Keter, or Apollyon`,
     );
     process.exit(1);
   }
@@ -754,18 +788,36 @@ async function main() {
     CONFIG.fal.model = params["fal-model"];
   }
 
-  const skipImage = params["no-image"] === true || params.thumbnail !== undefined;
+  const skipImage =
+    params["no-image"] === true || params.thumbnail !== undefined;
   const scpNumber = params.number
     ? parseInt(params.number)
     : getNextScpNumber();
   const provider = resolveProvider(params.provider);
   const model = resolveModel(provider, params.model);
 
+  const maxTokens = params["max-tokens"]
+    ? parseInt(params["max-tokens"], 10)
+    : CONFIG.defaultMaxTokens;
+  const minWords = params["min-words"]
+    ? parseInt(params["min-words"], 10)
+    : CONFIG.defaultMinWords;
+
+  if (Number.isNaN(maxTokens) || maxTokens <= 0) {
+    console.error(`❌ Invalid --max-tokens value: ${params["max-tokens"]}`);
+    process.exit(1);
+  }
+  if (Number.isNaN(minWords) || minWords <= 0) {
+    console.error(`❌ Invalid --min-words value: ${params["min-words"]}`);
+    process.exit(1);
+  }
+
   console.log(`📝 Generating SCPG-${scpNumber.toString().padStart(3, "0")}`);
   console.log(`🎯 Theme: ${params.theme}`);
   console.log(`🔒 Class: ${scpClass}`);
   console.log(`🧠 Provider: ${provider}`);
   console.log(`🛰️  Model: ${model}`);
+  console.log(`📏 Target: ~${minWords} words (max_tokens: ${maxTokens})`);
   if (params.tags) console.log(`🏷️  Tags: ${params.tags.join(", ")}`);
   console.log(
     `🖼️  Thumbnail: ${
@@ -774,15 +826,18 @@ async function main() {
           ? `manual (${params.thumbnail})`
           : "skipped"
         : `auto (Fal.ai ${CONFIG.fal.model})`
-    }`
+    }`,
   );
   console.log("");
 
   try {
     // 1. Generate the story
     console.log("🤖 Generating story...");
-    const prompt = generatePrompt(params.theme, scpClass, params);
-    const story = await callModelAPI(prompt, provider, model);
+    const prompt = generatePrompt(params.theme, scpClass, {
+      ...params,
+      minWords,
+    });
+    const story = await callModelAPI(prompt, provider, model, maxTokens);
     console.log("✅ Story generated\n");
 
     // 2. Generate thumbnail via Fal.ai (unless skipped or manual thumbnail given)
@@ -794,17 +849,22 @@ async function main() {
         process.cwd(),
         "public",
         "images",
-        `scpg-${scpNumberPadded}`
+        `scpg-${scpNumberPadded}`,
       );
       fs.mkdirSync(imageDir, { recursive: true });
       const thumbnailPath = path.join(imageDir, "thumbnail.jpg");
       thumbnailFilename = "thumbnail.jpg";
 
       const imagePrompt = generateImagePrompt(params.theme, scpClass, story);
-      const success = await generateThumbnailWithFal(imagePrompt, thumbnailPath);
+      const success = await generateThumbnailWithFal(
+        imagePrompt,
+        thumbnailPath,
+      );
 
       if (!success) {
-        console.warn("⚠️  Thumbnail generation failed — continuing without image.");
+        console.warn(
+          "⚠️  Thumbnail generation failed — continuing without image.",
+        );
         thumbnailFilename = null;
       }
 
@@ -817,7 +877,7 @@ async function main() {
       story,
       scpClass,
       params.theme,
-      { ...params, thumbnail: thumbnailFilename }
+      { ...params, thumbnail: thumbnailFilename },
     );
 
     console.log("✅ Story saved successfully!");
@@ -827,7 +887,7 @@ async function main() {
       console.log(`🖼️  Thumbnail: ${thumbnailFilename}`);
     }
     console.log(
-      "\n🚀 Your new SCP story is ready! Add it to your website and start generating more anomalies!"
+      "\n🚀 Your new SCP story is ready! Add it to your website and start generating more anomalies!",
     );
   } catch (error) {
     console.error("❌ Failed to generate story:", error.message);
