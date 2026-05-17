@@ -15,9 +15,10 @@ const anthropicModels = {
 };
 
 const openRouterModels = {
-  kimi_2_5: "moonshotai/kimi-k2",
-  kimi_latest: "moonshotai/kimi-latest",
-  kimi_2_5_instruct: "moonshotai/kimi-k2-instruct",
+  deepseek_v4_flash_free: "deepseek/deepseek-v4-flash:free",
+  kimi_2_6: "moonshotai/kimi-k2.6",
+  kimi_latest: "~moonshotai/kimi-latest",
+  kimi_2_instruct: "moonshotai/kimi-k2-instruct",
 };
 
 // Configuration
@@ -31,7 +32,7 @@ const CONFIG = {
     },
     openrouter: {
       apiUrl: "https://openrouter.ai/api/v1/chat/completions",
-      defaultModel: openRouterModels.kimi_latest,
+      defaultModel: openRouterModels.kimi_2_6,
     },
   },
   fal: {
@@ -267,11 +268,21 @@ async function callOpenRouterAPI(prompt, model, maxTokens) {
     const data = await response.json();
     const content = data.choices?.[0]?.message?.content;
 
-    if (typeof content === "string") {
+    if (typeof content === "string" && content.length > 0) {
       return content;
     }
 
-    throw new Error("OpenRouter response did not include story content");
+    // 200 OK with no content usually means OpenRouter returned an error body,
+    // a refusal, or a reasoning-only response. Surface the payload so the user can see.
+    if (data.error) {
+      throw new Error(
+        `OpenRouter returned an error in the body: ${JSON.stringify(data.error)}`,
+      );
+    }
+
+    throw new Error(
+      `OpenRouter response did not include story content. Payload: ${JSON.stringify(data).slice(0, 600)}`,
+    );
   } catch (error) {
     console.error("❌ Error calling OpenRouter API:", error.message);
     process.exit(1);
@@ -532,19 +543,24 @@ function resolveProvider(providerRaw) {
 }
 
 function resolveModel(provider, modelRaw) {
-  if (!modelRaw) {
+  // Resolution order: --model flag > env var (ANTHROPIC_MODEL/OPENROUTER_MODEL) > built-in default
+  const envVarName =
+    provider === "anthropic" ? "ANTHROPIC_MODEL" : "OPENROUTER_MODEL";
+  const effective = modelRaw || process.env[envVarName];
+
+  if (!effective) {
     return CONFIG.providers[provider].defaultModel;
   }
 
-  if (provider === "anthropic" && Object.hasOwn(anthropicModels, modelRaw)) {
-    return anthropicModels[modelRaw];
+  if (provider === "anthropic" && Object.hasOwn(anthropicModels, effective)) {
+    return anthropicModels[effective];
   }
 
-  if (provider === "openrouter" && Object.hasOwn(openRouterModels, modelRaw)) {
-    return openRouterModels[modelRaw];
+  if (provider === "openrouter" && Object.hasOwn(openRouterModels, effective)) {
+    return openRouterModels[effective];
   }
 
-  return modelRaw;
+  return effective;
 }
 
 function parseArgs() {
@@ -598,10 +614,25 @@ STORY OPTIONS:
   --images      Comma-separated image files (e.g., "image1.jpg,image2.jpg")
   --number      Specific SCP number (auto-generated if not provided)
   --provider    Model provider: openrouter (default) or anthropic
-  --model       Model id or alias for selected provider
+  --model       Model id or alias for selected provider (see MODEL ALIASES below).
+                Can also be set via ANTHROPIC_MODEL / OPENROUTER_MODEL in .env.
+                Resolution order: --model flag > env var > built-in default.
   --max-tokens  Max output tokens (default: 4000, e.g. 16000 for longer stories)
   --min-words   Target minimum word count in the prompt (default: 2000)
   --fal-model   Fal.ai model: "fal-ai/flux/dev" (default) or "fal-ai/flux-pro"
+
+MODEL ALIASES (pass to --model or set as env var):
+  Anthropic:
+    claude_4_5_haiku     -> claude-haiku-4-5-20251001
+    claude_4_6_sonnet    -> claude-sonnet-4-6   (default)
+    claude_4_6_opus      -> claude-opus-4-6
+  OpenRouter:
+    kimi_latest            -> moonshotai/kimi-latest             (default)
+    kimi_2_5               -> moonshotai/kimi-k2
+    kimi_2_5_instruct      -> moonshotai/kimi-k2-instruct
+    deepseek_v4_flash_free -> deepseek/deepseek-v4-flash:free    (free tier, quality varies by provider)
+
+  You can also pass any raw model id (e.g. --model "google/gemini-2.0-flash-exp").
 
 GENERATE THUMBNAILS (backfill missing images):
   --generate-thumbnails   Generate thumbnails for existing stories missing them

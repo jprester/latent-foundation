@@ -123,15 +123,38 @@ Key types defined in `/types/`:
 
 ## AI Integration
 
-The `/scripts/generate-story.mjs` script handles both story and thumbnail generation:
+Two generation paths exist:
 
-### Story Generation
+### A. CLI Script (`scripts/generate-story.mjs`)
+
+Single-shot, headless, API-based. Suits quick generation and automation.
+
 - Supports two LLM providers: **OpenRouter** (default) and **Anthropic**
 - OpenRouter models: Kimi K2, Kimi K2 Instruct
 - Anthropic models: Claude Sonnet 4.6 (default), Opus 4.6, Haiku 4.5
 - Configurable prompts based on SCP class (Safe/Euclid/Keter/Apollyon)
-- Automatic frontmatter and file generation
-- Supports custom themes, tags, location, researcher, and classification parameters
+- Automatic frontmatter and file generation, including title extracted from the body's `# SCPG-NNN: Title` heading
+- Supports custom themes, tags, location, researcher, classification, `--max-tokens`, and `--min-words`
+
+### B. Claude Code agentic pipeline (`/scpg`)
+
+Multi-agent flow that runs against the user's Claude subscription (no API key needed). Higher quality output via a dedicated ideator → writer handoff. Files live under `.claude/`:
+
+- `commands/scpg.md` — the `/scpg` slash command
+- `skills/generate-scpg/SKILL.md` — orchestration rules (file numbering, frontmatter shape, thumbnail handoff)
+- `agents/scp-ideator.md` — sharpens a rough theme into a premise spec
+- `agents/scp-writer.md` — drafts the full story body from the spec
+
+The skill computes the next SCPG number, passes it to the writer (so the H1 and in-body identifier are correct), then shells out to the CLI script (`npm run generate -- --generate-thumbnails --story scpg-NNN`) for the Fal.ai thumbnail step. Don't reimplement thumbnail logic in the skill.
+
+### Story formatting conventions
+
+Both paths must produce stories with:
+- H1 as `# SCPG-NNN: Title` — a real markdown heading, no quotes around title, no `SCP-XXXX` placeholder or made-up SCP numbers
+- `**Item #:** SCPG-NNN`, `**Object Class:** ...` etc. as bold key-value lines after the H1
+- `## Section` headings for major sections (Containment Procedures, Description, each Addendum)
+- **No** standalone `---` horizontal rules between sections — they render as visible borders on the site
+- In-body identifier always `SCPG-NNN`, consistent with the filename and frontmatter
 
 ### Thumbnail Generation
 - Uses Fal.ai queue API with Flux image models (`fal-ai/flux/dev` default, `fal-ai/flux-pro` for higher quality)
