@@ -110,6 +110,16 @@ export function getStoryThumbnailPath(story: Story): string | null {
   return null;
 }
 
+export function getStoryAudioPath(storyId: string): string | null {
+  const filePath = path.join(process.cwd(), "public", "audio", `${storyId}.mp3`);
+
+  if (fs.existsSync(filePath)) {
+    return `/audio/${storyId}.mp3`;
+  }
+
+  return null;
+}
+
 export function getAllStorySlugs(): string[] {
   if (!fs.existsSync(storiesDirectory)) {
     return [];

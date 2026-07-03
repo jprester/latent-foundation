@@ -7,6 +7,7 @@ import {
   getAllStorySlugs,
   getStoryExcerpt,
   getStoryThumbnailPath,
+  getStoryAudioPath,
 } from "@/lib/stories";
 import PageHeader from "@/components/PageHeader";
 import StoryContent from "@/components/StoryContent";
@@ -70,6 +71,8 @@ export default async function StoryPage({ params }: StoryPageProps) {
     notFound();
   }
 
+  const audioPath = getStoryAudioPath(story.id);
+
   return (
     <>
       <StructuredData story={story} />
@@ -81,7 +84,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
         />
 
         <main className="max-w-4xl mx-auto md:px-4 md:py-8">
-          <StoryContent story={story} />
+          <StoryContent story={story} audioPath={audioPath} />
 
           {/* Navigation */}
           <div className="mt-8 text-center">

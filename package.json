@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "generate": "node scripts/generate-story.mjs",
-    "generate:thumbnails": "node scripts/generate-story.mjs --generate-thumbnails"
+    "generate:thumbnails": "node scripts/generate-story.mjs --generate-thumbnails",
+    "generate:audio": "node scripts/generate-audio.mjs"
   },
   "dependencies": {
     "dotenv": "^16.5.0",

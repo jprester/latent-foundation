@@ -11,9 +11,10 @@ import ImageGallery from "./ImageGallery";
 
 interface StoryContentProps {
   story: Story;
+  audioPath?: string | null;
 }
 
-export default function StoryContent({ story }: StoryContentProps) {
+export default function StoryContent({ story, audioPath }: StoryContentProps) {
   const [thumbnailError, setThumbnailError] = useState(false);
 
   const getClassColor = (className: string) => {
@@ -85,8 +86,17 @@ export default function StoryContent({ story }: StoryContentProps) {
 
       {/* Story Content */}
       <div className="p-6 md:p-8">
-        {/* Audio Player */}
-        {/* <AudioPlayer content={story.content} title={story.title} /> Default browser voices suck. Need to find other solution */}
+        {audioPath && (
+          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 border border-scp-border dark:border-scp-border-dark rounded transition-colors duration-200">
+            <p className="font-mono font-bold text-sm text-scp-text dark:text-scp-text-dark mb-3">
+              AUDIO RECORD — LEVEL 2 CLEARANCE
+            </p>
+            <audio controls preload="none" src={audioPath} className="w-full">
+              Your browser does not support audio playback.{" "}
+              <a href={audioPath}>Download the recording.</a>
+            </audio>
+          </div>
+        )}
 
         <div className="prose prose-gray dark:prose-invert max-w-none">
           <ReactMarkdown

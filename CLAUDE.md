@@ -15,6 +15,7 @@ npm run start              # Start production server
 npm run lint               # Run ESLint
 npm run generate           # Generate new AI stories (requires API keys)
 npm run generate:thumbnails # Generate missing thumbnails for existing stories
+npm run generate:audio     # Generate missing narration MP3s (requires DEEPINFRA_API_KEY)
 ```
 
 ### Story Generation
@@ -43,11 +44,28 @@ npm run generate -- --generate-thumbnails --story 15 --force
 npm run generate -- --generate-thumbnails --fal-model "fal-ai/flux-pro"
 ```
 
+### Audio Narration
+
+```bash
+# Generate narration for all stories missing audio
+npm run generate:audio
+
+# One story ("39" and "scpg-039" both work); --force regenerates
+npm run generate:audio -- --story 39 --force
+
+# Inspect the spoken text without calling the API
+npm run generate:audio -- --story 39 --dry-run
+
+# Voice/speed overrides
+npm run generate:audio -- --story 39 --voice-main am_michael --voice-alt bf_emma --speed 1.1 --single-voice
+```
+
 ### Environment Variables
 
 - `ANTHROPIC_API_KEY` — Required for Anthropic provider
 - `OPENROUTER_API_KEY` — Required for OpenRouter provider (default)
 - `FAL_KEY` — Required for Fal.ai thumbnail generation
+- `DEEPINFRA_API_KEY` — Required for audio narration (Kokoro TTS)
 - `OPENROUTER_SITE_URL` — Optional site URL for OpenRouter referrer header
 
 ## Architecture
@@ -167,3 +185,12 @@ Both paths must produce stories with:
 - Thumbnails saved to `public/images/[story-id]/thumbnail.jpg`
 - `--generate-thumbnails` mode backfills missing thumbnails for existing stories
 - Supports `--story` to target a specific story and `--force` to regenerate existing thumbnails
+
+### Audio Narration (TTS)
+
+- `scripts/generate-audio.mjs` narrates stories with Kokoro TTS on DeepInfra (`hexgrad/Kokoro-82M`, ~2¢ per story)
+- Pipeline: markdown → spoken-text preprocessing → voice segmentation → per-chunk TTS → MP3 at `public/audio/[story-id].mp3`
+- Preprocessing converts SCP conventions to speakable text: `SCPG-039` → "SCPG 39", `█████`/`[REDACTED]` → "redacted", `██/██/2024` → "a redacted date in 2024", drops "(4)"-style digit clarifications, expands `±`/`°C`/`%`/`×` symbols, strips Cyrillic runs (Kokoro voices are English-only)
+- Two-voice narration: main voice (`am_michael`) for clinical document text and section headings; alt voice (`bf_emma`) for researcher logs/interviews (headings matching log/interview/transcript/notes), italic-only paragraphs, and blockquotes. `--single-voice` disables this
+- ffmpeg is optional: if present the concatenated MP3 is re-encoded (64 kbps mono, clean duration metadata); if absent, chunks are byte-concatenated, which plays fine but may seek unreliably
+- Story pages render an `<audio>` block automatically when `public/audio/[story-id].mp3` exists (`getStoryAudioPath()` in `lib/stories.ts`, same pattern as thumbnails)
