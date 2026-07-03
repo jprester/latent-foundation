@@ -27,7 +27,7 @@ const CONFIG = {
   pricePerMillionChars: 0.62,
   // Kokoro preset voices. Main = clinical document voice, alt = researcher
   // logs / interview transcripts.
-  voiceMain: "am_michael",
+  voiceMain: "bm_lewis",
   voiceAlt: "bf_emma",
   maxChunkChars: 1500,
   concurrency: 3,
@@ -71,9 +71,13 @@ function speakableText(text) {
       .replace(/≥/g, " at least ")
       .replace(/≤/g, " at most ")
       .replace(/%/g, " percent")
-      // Kokoro's English voices can't speak Cyrillic — drop those runs
+      // Kokoro's English voices can't speak Cyrillic or CJK — drop those runs
       // (stories pair them with a bracketed translation)
       .replace(/[Ѐ-ӿ][Ѐ-ӿ\s.,;:!?()«»—-]*/g, " ")
+      .replace(
+        /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}][\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\s。、．，・「」『』！？（）：；ー—-]*/gu,
+        " "
+      )
       // Markdown emphasis/code markers (after voice detection, which needs them)
       .replace(/\*\*([^*]+)\*\*/g, "$1")
       .replace(/\*([^*]+)\*/g, "$1")

@@ -191,6 +191,6 @@ Both paths must produce stories with:
 - `scripts/generate-audio.mjs` narrates stories with Kokoro TTS on DeepInfra (`hexgrad/Kokoro-82M`, ~2¢ per story)
 - Pipeline: markdown → spoken-text preprocessing → voice segmentation → per-chunk TTS → MP3 at `public/audio/[story-id].mp3`
 - Preprocessing converts SCP conventions to speakable text: `SCPG-039` → "SCPG 39", `█████`/`[REDACTED]` → "redacted", `██/██/2024` → "a redacted date in 2024", drops "(4)"-style digit clarifications, expands `±`/`°C`/`%`/`×` symbols, strips Cyrillic runs (Kokoro voices are English-only)
-- Two-voice narration: main voice (`am_michael`) for clinical document text and section headings; alt voice (`bf_emma`) for researcher logs/interviews (headings matching log/interview/transcript/notes), italic-only paragraphs, and blockquotes. `--single-voice` disables this
+- Two-voice narration: main voice (`bm_lewis`) for clinical document text and section headings; alt voice (`bf_emma`) for researcher logs/interviews (headings matching log/interview/transcript/notes), italic-only paragraphs, and blockquotes. `--single-voice` disables this
 - ffmpeg is optional: if present the concatenated MP3 is re-encoded (64 kbps mono, clean duration metadata); if absent, chunks are byte-concatenated, which plays fine but may seek unreliably
 - Story pages render an `<audio>` block automatically when `public/audio/[story-id].mp3` exists (`getStoryAudioPath()` in `lib/stories.ts`, same pattern as thumbnails)
