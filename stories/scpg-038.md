@@ -1,5 +1,5 @@
 ---
-title: "SCPG-038 The Town That Forgets Itself"
+title: "SCPG-038: The Town That Forgets Itself"
 class: "Euclid"
 tags: ["unpredictable", "moderate-risk", "a", "small"]
 date: "2026-05-17"
