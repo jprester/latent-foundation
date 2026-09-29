@@ -1,7 +1,7 @@
 ---
 title: "SCPG-038: The Town That Forgets Itself"
 class: "Euclid"
-tags: ["unpredictable", "moderate-risk", "a", "small"]
+tags: ["reality-instability", "small-town", "bulgaria", "consensus-reality", "memory"]
 date: "2026-05-17"
 thumbnail: "thumbnail.jpg"
 ---

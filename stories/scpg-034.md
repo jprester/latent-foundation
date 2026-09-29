@@ -1,7 +1,7 @@
 ---
 title: "SCPG-034: The Metaphor Engine"
 class: "Safe"
-tags: ["predictable","low-risk","sentient","ai","artificial-intelligence","writing"]
+tags: ["artificial-intelligence", "poetry", "sentient", "benevolent", "writing"]
 date: "2026-03-12"
 thumbnail: "thumbnail.jpg"
 ---

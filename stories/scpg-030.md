@@ -1,7 +1,7 @@
 ---
 title: "SCPG-030: The Digital Demiurge"
 class: "Keter"
-tags: ["dangerous", "high-risk", "breach-risk", "anomalous", "mysterious"]
+tags: ["website", "reality-alteration", "cryptocurrency", "cognitohazard", "digital"]
 date: "2025-06-30"
 ---
 

@@ -44,15 +44,18 @@ thumbnail: "thumbnail.jpg"
 ```
 
 Notes:
-- `title` is `"SCPG-NNN: <title>"` where `<title>` comes from the body's `# SCP-XXXX: "..."` heading (strip the quotes). The story cards display this string directly, so it must be present — homepage cards show only `SCPG-NNN` when it's missing.
+- `title` is `"SCPG-NNN: <title>"`, matching the body's `# SCPG-NNN: <title>` heading exactly. The story cards display this string directly, so it must be present — homepage cards show only `SCPG-NNN` when it's missing.
 - `tags` should be 4–6 items, lowercase, hyphenated. The writer suggests them; trim to the strongest.
 - Include `thumbnail: "thumbnail.jpg"` unconditionally — even if the thumbnail step later fails, the path will resolve once it's generated.
 
 ## Story body conventions
 
 The writer should follow what already works in `stories/` — read 1–2 recent files for calibration if needed. Key conventions:
-- Opens with `# SCP-XXXX: "Title in Quotes"` (literal `XXXX`, not the real number — the site renders the ID separately)
-- Sections: **Special Containment Procedures**, **Description**, then 2–6 numbered **Addendum** entries
+- Opens with `# SCPG-NNN: Title` — a real H1, no quotes around the title, never `SCP-XXXX` or a made-up SCP number
+- Bold key-value lines after the H1 (`**Item #:** SCPG-NNN`, `**Object Class:** ...`)
+- `## Section` headings: **Special Containment Procedures**, **Description**, then 2–6 **Addendum** entries
+- No standalone `---` horizontal rules between sections (they render as visible borders on the site)
+- In-body identifier is always `SCPG-NNN`, consistent with filename and frontmatter
 - Addenda are the heart of the format — include at least one researcher log written in first person, and at least one incident report
 - Use `[REDACTED]`, `████`, and dates with `██/██/YYYY` for authentic Foundation feel
 - Target 3000–5000 words for a strong entry

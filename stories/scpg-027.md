@@ -1,7 +1,7 @@
 ---
 title: "SCPG-027: The Viral Revelation"
 class: "Keter"
-tags: ["dangerous", "high-risk", "breach-risk", "a", "cosmic"]
+tags: ["viral-video", "social-media", "cognitohazard", "digital", "cosmic"]
 date: "2025-05-31"
 ---
 

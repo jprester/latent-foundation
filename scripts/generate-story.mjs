@@ -433,31 +433,17 @@ async function generateThumbnailWithFal(imagePrompt, outputPath) {
 // ---------------------------------------------------------------------------
 
 function generateTags(theme, scpClass, additionalParams) {
-  const baseTags = [];
-
-  switch (scpClass.toLowerCase()) {
-    case "safe":
-      baseTags.push("predictable", "low-risk");
-      break;
-    case "euclid":
-      baseTags.push("unpredictable", "moderate-risk");
-      break;
-    case "keter":
-      baseTags.push("dangerous", "high-risk", "breach-risk");
-      break;
-    case "apollyon":
-      baseTags.push("uncontainable", "world-ending", "catastrophic");
-      break;
+  // Class is already its own frontmatter field, so tags carry only subject
+  // matter. Explicit --tags win; otherwise the whole theme becomes one slug
+  // (splitting on spaces produced junk tags like "a" and "small").
+  if (additionalParams.tags?.length) {
+    return [...new Set(additionalParams.tags.map((t) => t.toLowerCase()))].slice(0, 6);
   }
-
-  const themeWords = theme.toLowerCase().split(" ");
-  baseTags.push(...themeWords.slice(0, 2));
-
-  if (additionalParams.tags) {
-    baseTags.push(...additionalParams.tags);
-  }
-
-  return [...new Set(baseTags)].slice(0, 6);
+  const slug = theme
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return slug ? [slug] : [];
 }
 
 function extractStoryTitle(content) {

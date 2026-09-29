@@ -1,7 +1,7 @@
 ---
 title: "SCPG-026: The Optimizer"
 class: "Keter"
-tags: ["dangerous", "high-risk", "breach-risk", "machine", "learning"]
+tags: ["artificial-intelligence", "reality-alteration", "optimization", "physics", "technological"]
 date: "2025-05-31"
 images: ["institue-of-cyberbetics.jpg"]
 ---

@@ -1,7 +1,7 @@
 ---
 title: "SCPG-036: When the Cartridge Speaks"
 class: "Keter"
-tags: ["dangerous","high-risk","breach-risk","cult"]
+tags: ["video-game", "cartridge", "cult", "ideological-infection", "occult"]
 date: "2026-05-17"
 thumbnail: "thumbnail.jpg"
 ---

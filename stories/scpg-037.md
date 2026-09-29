@@ -1,7 +1,7 @@
 ---
 title: "SCPG-037: What You Meant To Say"
 class: "Keter"
-tags: ["dangerous","high-risk","breach-risk","an","elevator","memetic"]
+tags: ["elevator", "memetic", "soviet-era", "tbilisi", "spatial"]
 date: "2026-05-17"
 thumbnail: "thumbnail.jpg"
 ---
