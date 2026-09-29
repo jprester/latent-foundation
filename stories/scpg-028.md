@@ -1,7 +1,7 @@
 ---
 title: "SCPG-028: The Mimic's Hunt"
 class: "Euclid"
-tags: ["unpredictable", "moderate-risk", "supenatural", "serial"]
+tags: ["mimic", "shapeshifter", "predatory", "impersonation", "humanoid"]
 date: "2025-06-30"
 ---
 

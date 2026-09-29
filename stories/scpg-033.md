@@ -1,7 +1,7 @@
 ---
 title: "SCPG-033: The Gödel-March Hypothesis"
 class: "Keter"
-tags: ["dangerous", "high-risk", "breach-risk", "new", "physics"]
+tags: ["mathematics", "physics", "causality", "infohazard", "theoretical"]
 date: "2026-03-12"
 ---
 

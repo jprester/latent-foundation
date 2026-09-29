@@ -1,7 +1,7 @@
 ---
 title: "SCPG-029: The Threshold Protocol"
 class: "Keter"
-tags: ["dangerous", "high-risk", "breach-risk", "interdimensional", "doorway"]
+tags: ["portal", "doorway", "interdimensional", "artifact", "cyclical"]
 date: "2025-06-30"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "SCPG-035: The Architect's Remainder"
 class: "Euclid"
-tags: ["unpredictable","moderate-risk","ancient","simulated"]
+tags: ["ancient", "artifact", "archaeology", "simulation", "turkey"]
 date: "2026-05-17"
 thumbnail: "thumbnail.jpg"
 ---
